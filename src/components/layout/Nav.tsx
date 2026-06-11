@@ -17,8 +17,15 @@ export default function Nav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
+  const isHome = pathname === "/";
+
+  // On non-home pages the nav always uses the dark (scrolled) style
+  const useDarkStyle = !isHome || scrolled;
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
+    // Set initial scroll state on mount (handles page load mid-scroll)
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -36,7 +43,7 @@ export default function Nav() {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
+          useDarkStyle
             ? "bg-white/95 backdrop-blur-md border-b border-slate-200/60 shadow-[0_2px_20px_rgba(12,45,63,0.08)]"
             : "bg-transparent"
         }`}
@@ -47,7 +54,7 @@ export default function Nav() {
             <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
               <div
                 className="w-8 h-8 rounded-[6px] flex items-center justify-center transition-colors"
-                style={{ background: scrolled ? "var(--color-ocean)" : "rgba(255,255,255,0.15)", border: scrolled ? "none" : "1px solid rgba(255,255,255,0.25)" }}
+                style={{ background: useDarkStyle ? "var(--color-ocean)" : "rgba(255,255,255,0.15)", border: useDarkStyle ? "none" : "1px solid rgba(255,255,255,0.25)" }}
               >
                 <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 text-white" aria-hidden="true">
                   <path d="M3 12L12 3L21 12V21H15V15H9V21H3V12Z" fill="currentColor" />
@@ -57,8 +64,8 @@ export default function Nav() {
                 className="text-xl font-bold tracking-tight transition-colors duration-300"
                 style={{
                   fontFamily: "var(--font-display)",
-                  color: scrolled ? "var(--color-ocean)" : "#FFFFFF",
-                  textShadow: scrolled ? "none" : "0 1px 8px rgba(0,0,0,0.3)",
+                  color: useDarkStyle ? "var(--color-ocean)" : "#FFFFFF",
+                  textShadow: useDarkStyle ? "none" : "0 1px 8px rgba(0,0,0,0.3)",
                 }}
               >
                 microf
@@ -72,7 +79,7 @@ export default function Nav() {
                   key={href}
                   href={href}
                   className={`text-sm font-medium transition-all duration-200 relative after:absolute after:bottom-[-2px] after:left-0 after:h-[2px] after:transition-all after:duration-200 ${
-                    scrolled
+                    useDarkStyle
                       ? pathname.startsWith(href)
                         ? "text-[var(--color-ocean)] after:w-full after:bg-[var(--color-ember)]"
                         : "text-[var(--color-ink-70)] hover:text-[var(--color-ocean)] after:w-0 hover:after:w-full after:bg-[var(--color-ember)]"
@@ -80,7 +87,7 @@ export default function Nav() {
                         ? "text-white after:w-full after:bg-[var(--color-ember)]"
                         : "text-white/80 hover:text-white after:w-0 hover:after:w-full after:bg-[var(--color-ember)]"
                   }`}
-                  style={{ textShadow: scrolled ? "none" : "0 1px 6px rgba(0,0,0,0.25)" }}
+                  style={{ textShadow: useDarkStyle ? "none" : "0 1px 6px rgba(0,0,0,0.25)" }}
                 >
                   {label}
                 </Link>
@@ -95,8 +102,8 @@ export default function Nav() {
                 rel="noopener noreferrer"
                 className="text-sm font-medium transition-all duration-200 px-3 py-2"
                 style={{
-                  color: scrolled ? "var(--color-ink-70)" : "rgba(255,255,255,0.75)",
-                  textShadow: scrolled ? "none" : "0 1px 6px rgba(0,0,0,0.25)",
+                  color: useDarkStyle ? "var(--color-ink-70)" : "rgba(255,255,255,0.75)",
+                  textShadow: useDarkStyle ? "none" : "0 1px 6px rgba(0,0,0,0.25)",
                 }}
               >
                 Contractor Login
@@ -107,8 +114,8 @@ export default function Nav() {
                 rel="noopener noreferrer"
                 className="text-sm font-medium transition-all duration-200 px-3 py-2"
                 style={{
-                  color: scrolled ? "var(--color-ink-70)" : "rgba(255,255,255,0.75)",
-                  textShadow: scrolled ? "none" : "0 1px 6px rgba(0,0,0,0.25)",
+                  color: useDarkStyle ? "var(--color-ink-70)" : "rgba(255,255,255,0.75)",
+                  textShadow: useDarkStyle ? "none" : "0 1px 6px rgba(0,0,0,0.25)",
                 }}
               >
                 Make a Payment
@@ -130,13 +137,13 @@ export default function Nav() {
             <button
               onClick={() => setOpen(!open)}
               className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-lg transition-colors"
-              style={{ background: scrolled ? "transparent" : "rgba(255,255,255,0.10)" }}
+              style={{ background: useDarkStyle ? "transparent" : "rgba(255,255,255,0.10)" }}
               aria-expanded={open}
               aria-label={open ? "Close menu" : "Open menu"}
             >
-              <span className={`block w-5 h-0.5 rounded-full transition-all duration-300 ${open ? "rotate-45 translate-y-2" : ""}`} style={{ background: scrolled ? "var(--color-ocean)" : "#FFFFFF" }} />
-              <span className={`block w-5 h-0.5 rounded-full transition-all duration-300 ${open ? "opacity-0 scale-x-0" : ""}`} style={{ background: scrolled ? "var(--color-ocean)" : "#FFFFFF" }} />
-              <span className={`block w-5 h-0.5 rounded-full transition-all duration-300 ${open ? "-rotate-45 -translate-y-2" : ""}`} style={{ background: scrolled ? "var(--color-ocean)" : "#FFFFFF" }} />
+              <span className={`block w-5 h-0.5 rounded-full transition-all duration-300 ${open ? "rotate-45 translate-y-2" : ""}`} style={{ background: useDarkStyle ? "var(--color-ocean)" : "#FFFFFF" }} />
+              <span className={`block w-5 h-0.5 rounded-full transition-all duration-300 ${open ? "opacity-0 scale-x-0" : ""}`} style={{ background: useDarkStyle ? "var(--color-ocean)" : "#FFFFFF" }} />
+              <span className={`block w-5 h-0.5 rounded-full transition-all duration-300 ${open ? "-rotate-45 -translate-y-2" : ""}`} style={{ background: useDarkStyle ? "var(--color-ocean)" : "#FFFFFF" }} />
             </button>
           </nav>
         </div>

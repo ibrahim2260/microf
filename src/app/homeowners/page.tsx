@@ -129,35 +129,39 @@ export default function HomeownersPage() {
               <FadeIn>
                 <div>
                   <p className="text-sm font-semibold text-[var(--color-ember)] uppercase tracking-wider mb-3">We understand the moment</p>
-                  <h2 id="emergency-heading">It&apos;s 11pm. The heat just went out.</h2>
+                  <h2 id="emergency-heading">It&apos;s 11pm. The AC just went out.</h2>
                   <div className="mt-5 space-y-4 text-[var(--color-ink-70)] leading-relaxed">
                     <p>
-                      You&apos;ve got kids in the house and it&apos;s below freezing outside. You call your HVAC contractor, and they can replace the furnace — but it&apos;s going to cost $4,000 to $6,000 that you don&apos;t have sitting in a checking account right now.
+                      You&apos;ve got kids in the house and it&apos;s 100 degrees outside. Your AC dies. You call your HVAC contractor, and they can replace the unit — but it&apos;s going to cost $4,000 to $6,000 that you don&apos;t have sitting in a checking account right now.
                     </p>
                     <p>
                       You try the bank — denied. You try the credit card — limit too low. You feel stuck. You feel embarrassed.
                     </p>
                     <p>
-                      <strong className="text-[var(--color-ocean)] font-semibold">You&apos;re not stuck. You&apos;re exactly who Microf was built for.</strong>
+                      <strong className="font-semibold" style={{ color: "var(--color-ocean)" }}>You&apos;re not stuck. You&apos;re exactly who Microf was built for.</strong>
                     </p>
                     <p>
-                      A five-minute application. No hard credit check. Near-instant approval. Your contractor gets the green light — and your family gets warm.
+                      A five-minute application. No hard credit check. Near-instant approval. Your contractor gets the green light — and your family gets cool.
                     </p>
                   </div>
                 </div>
               </FadeIn>
 
               <FadeIn delay={0.15}>
-                {/* TODO: Replace with real photo — warm, documentary-style image of a family at home in winter */}
-                <div className="rounded-2xl overflow-hidden aspect-[4/3] relative" style={{ background: "var(--color-ocean-light)" }}>
-                  <div className="absolute inset-0 flex items-center justify-center text-[var(--color-ocean-mid)]">
-                    <div className="text-center p-8">
-                      <svg viewBox="0 0 48 48" fill="none" className="w-16 h-16 mx-auto mb-4 opacity-30" aria-hidden="true">
-                        <path d="M6 24L24 6L42 24V42H30V30H18V42H6V24Z" stroke="currentColor" strokeWidth="2" />
-                      </svg>
-                      <p className="text-sm opacity-40 font-medium">Client photo: warm family at home</p>
-                    </div>
-                  </div>
+                <div className="rounded-2xl overflow-hidden aspect-video relative shadow-[var(--shadow-warm-lg)]">
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="none"
+                    poster="/microdemo-poster.jpg"
+                    aria-label="Microf lease-to-own financing demo"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  >
+                    <source src="/microdemo.webm" type="video/webm" />
+                    <source src="/microdemo.mp4" type="video/mp4" />
+                  </video>
                 </div>
               </FadeIn>
             </div>
