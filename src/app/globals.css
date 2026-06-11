@@ -1,26 +1,188 @@
 @import "tailwindcss";
 
+/* ─── Design Tokens ─────────────────────────────────────────────────── */
+
+@theme {
+  /* Colors */
+  --color-base:        #F8F4EE;
+  --color-base-50:     #FDFAF6;
+  --color-ocean:       #0C2D3F;
+  --color-ocean-80:    #1A4A62;
+  --color-ocean-mid:   #1A5572;
+  --color-ocean-light: #EBF4F8;
+  --color-ember:       #E8621A;
+  --color-ember-dark:  #C84D0E;
+  --color-ember-light: #FFF1E9;
+  --color-mint:        #16A87C;
+  --color-mint-dark:   #0E8A63;
+  --color-mint-light:  #E6F7F2;
+  --color-ink:         #1A1F2E;
+  --color-ink-70:      #4A5568;
+  --color-mist:        #EDF2F7;
+  --color-smoke:       #94A3B8;
+  --color-white:       #FFFFFF;
+
+  /* Typography */
+  --font-display: var(--font-fraunces), 'Georgia', serif;
+  --font-sans:    var(--font-jakarta), 'system-ui', sans-serif;
+
+  /* Spacing scale */
+  --spacing-section: 6rem;
+  --spacing-section-sm: 4rem;
+
+  /* Radius */
+  --radius-sm:   4px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-pill: 9999px;
+
+  /* Shadows */
+  --shadow-warm-sm:  0 1px 3px rgba(12, 45, 63, 0.08), 0 1px 2px rgba(12, 45, 63, 0.04);
+  --shadow-warm-md:  0 4px 16px rgba(12, 45, 63, 0.10), 0 2px 6px rgba(12, 45, 63, 0.06);
+  --shadow-warm-lg:  0 12px 40px rgba(12, 45, 63, 0.12), 0 4px 12px rgba(12, 45, 63, 0.08);
+  --shadow-warm-xl:  0 24px 64px rgba(12, 45, 63, 0.14), 0 8px 24px rgba(12, 45, 63, 0.08);
+  --shadow-ember:    0 8px 32px rgba(232, 98, 26, 0.28);
+  --shadow-mint:     0 8px 32px rgba(22, 168, 124, 0.28);
+}
+
+/* ─── shadcn/Wave Hero Color Aliases ───────────────────────────────── */
+/* The GlowyWavesHero reads these via getComputedStyle on the canvas    */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background:         #0C2D3F;   /* ocean — hero canvas bg             */
+  --foreground:         #FFFFFF;   /* white — text & subtle waves        */
+  --primary:            #E8621A;   /* ember — dominant glow waves        */
+  --primary-foreground: #FFFFFF;
+  --accent:             #16A87C;   /* mint — secondary glow waves        */
+  --accent-foreground:  #FFFFFF;
+  --secondary:          #1A5572;   /* ocean-mid — depth waves            */
+  --secondary-foreground: #FFFFFF;
+  --muted:              #1A4A62;   /* ocean-80 — bg gradient bottom      */
+  --muted-foreground:   #94A3B8;
+  --border:             rgba(255,255,255,0.15);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─── Base Styles ───────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-base);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Typography ────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--color-ocean);
+}
+
+h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 700; }
+h2 { font-size: clamp(1.875rem, 4vw, 3rem);  font-weight: 600; }
+h3 { font-size: clamp(1.5rem, 3vw, 2rem);    font-weight: 600; }
+h4 { font-size: 1.25rem; font-weight: 600; }
+
+p { color: var(--color-ink-70); }
+
+/* ─── Grain Overlay ─────────────────────────────────────────────────── */
+
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 150px 150px;
+}
+
+/* ─── Focus States ──────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--color-ember);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ─── Selection ─────────────────────────────────────────────────────── */
+
+::selection {
+  background: rgba(232, 98, 26, 0.15);
+  color: var(--color-ocean);
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-base); }
+::-webkit-scrollbar-thumb { background: var(--color-smoke); border-radius: 3px; }
+
+/* ─── Utilities ─────────────────────────────────────────────────────── */
+
+.section-pad {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 768px) {
+  .section-pad {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+}
+
+.container-tight {
+  max-width: 72rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container-tight {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* ─── Reduced Motion ────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Homeowner video panel — chevron right edge ────────────────── */
+
+@media (min-width: 1024px) {
+  .microf-video-chevron {
+    clip-path: polygon(0 0, calc(100% - 48px) 0, 100% 50%, calc(100% - 48px) 100%, 0 100%);
+  }
 }
