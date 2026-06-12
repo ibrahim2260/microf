@@ -16,7 +16,7 @@ interface Product {
 
 const PRODUCTS: Product[] = [
   { id: "furnace",      word: "furnace",      label: "Furnaces",         href: "/homeowners/hvac" },
-  { id: "ac",           word: "AC",           label: "Air Conditioners", href: "/homeowners/hvac" },
+  { id: "ac",           word: "AC unit",       label: "Air Conditioners", href: "/homeowners/hvac" },
   { id: "heat-pump",    word: "heat pump",    label: "Heat Pumps",       href: "/homeowners/hvac" },
   { id: "mini-split",   word: "mini-split",   label: "Mini-Splits",      href: "/homeowners/hvac" },
   { id: "water-heater", word: "water heater", label: "Water Heaters",    href: "/homeowners/water-heaters" },
@@ -42,7 +42,7 @@ const COLD_HOT_ORDERS: Record<"cold" | "hot", string[]> = {
 const MILD_PROBLEMS: RotationItem[] = [
   { id: "cold-shower",   displayText: "cold shower",       activeProductId: "water-heater" },
   { id: "dead-furnace",  displayText: "dead furnace",      activeProductId: "furnace" },
-  { id: "broken-ac",     displayText: "broken AC",         activeProductId: "ac" },
+  { id: "broken-ac",     displayText: "broken AC unit",    activeProductId: "ac" },
   { id: "tired-pump",    displayText: "tired heat pump",   activeProductId: "heat-pump" },
   { id: "silent-split",  displayText: "silent mini-split", activeProductId: "mini-split" },
 ];
