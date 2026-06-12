@@ -1,8 +1,8 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button-shadcn";
@@ -18,6 +18,8 @@ interface WaveConfig {
 }
 
 const trustPills: readonly string[] = [];
+
+const CYCLING_WORDS = ["furnace", "AC unit", "water heater", "heat pump", "mini-split"];
 
 const heroStats: { label: string; value: string }[] = [
   { label: "States served", value: "43" },
@@ -56,6 +58,14 @@ export function GlowyWavesHero() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const mouseRef = useRef<Point>({ x: 0, y: 0 });
   const targetMouseRef = useRef<Point>({ x: 0, y: 0 });
+  const [wordIdx, setWordIdx] = useState(0);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq.matches) return;
+    const id = setInterval(() => setWordIdx((i) => (i + 1) % CYCLING_WORDS.length), 2600);
+    return () => clearInterval(id);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -328,11 +338,43 @@ export function GlowyWavesHero() {
               textShadow: "0 2px 24px rgba(0,0,0,0.55), 0 1px 4px rgba(0,0,0,0.40)",
             }}
           >
-            Your furnace quit.{" "}
-            <span style={{ color: "#FF7A38", textShadow: "0 0 40px rgba(232,98,26,0.7), 0 2px 16px rgba(0,0,0,0.5)" }}>
-              Your comfort
-            </span>{" "}
-            shouldn&apos;t.
+            {"Your "}
+
+            {/*
+              CSS grid stacking: invisible "water heater" sizer always holds
+              the widest word's space so the headline never reflows.
+            */}
+            <span aria-live="off" style={{ display: "inline-grid", verticalAlign: "baseline" }}>
+              <span
+                aria-hidden="true"
+                style={{ visibility: "hidden", gridRow: 1, gridColumn: 1 }}
+              >
+                water heater
+              </span>
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={CYCLING_WORDS[wordIdx]}
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.32, ease: [0.21, 0.47, 0.32, 0.98] }}
+                  style={{
+                    gridRow: 1,
+                    gridColumn: 1,
+                    display: "inline-block",
+                    color: "#FF7A38",
+                    textShadow: "0 0 40px rgba(232,98,26,0.7), 0 2px 16px rgba(0,0,0,0.5)",
+                  }}
+                >
+                  {CYCLING_WORDS[wordIdx]}
+                </motion.span>
+              </AnimatePresence>
+            </span>
+
+            {" quit. "}
+            <span style={{ color: "rgba(255,255,255,0.92)" }}>
+              Your comfort shouldn&apos;t.
+            </span>
           </motion.h1>
 
           {/* Subhead */}
