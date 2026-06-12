@@ -6,6 +6,7 @@ import FAQ from "@/components/sections/FAQ";
 import PaymentEstimator from "@/components/sections/PaymentEstimator";
 import FadeIn from "@/components/ui/FadeIn";
 import MobileApplyCTA from "@/components/ui/MobileApplyCTA";
+import { AuroraHero } from "@/components/ui/AuroraHero";
 
 export const metadata: Metadata = {
   title: "For Homeowners — HVAC & Water Heater Financing",
@@ -58,69 +59,8 @@ export default function HomeownersPage() {
       <Nav />
       <main className="flex-1 pt-16">
 
-        {/* ── HERO ─────────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden py-20 md:py-28" style={{ background: "var(--color-base)" }}>
-          <div
-            className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-30 pointer-events-none"
-            style={{
-              background: "radial-gradient(circle, var(--color-ember-light) 0%, transparent 70%)",
-              transform: "translate(30%, -30%)",
-            }}
-          />
-          <div className="container-tight relative z-10">
-            <div className="max-w-2xl">
-              <FadeIn>
-                <nav aria-label="Breadcrumb" className="mb-6">
-                  <ol className="flex items-center gap-2 text-sm text-[var(--color-smoke)]">
-                    <li><Link href="/" className="hover:text-[var(--color-ocean)] transition-colors">Home</Link></li>
-                    <li aria-hidden="true">/</li>
-                    <li className="text-[var(--color-ocean)] font-medium" aria-current="page">Homeowners</li>
-                  </ol>
-                </nav>
-              </FadeIn>
-
-              <FadeIn delay={0.05}>
-                <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider" style={{ background: "var(--color-ember-light)", color: "var(--color-ember)" }}>
-                  No credit check required
-                </div>
-              </FadeIn>
-
-              <FadeIn delay={0.1}>
-                <h1 className="mb-5">
-                  Broken equipment,{" "}
-                  <span style={{ color: "var(--color-ember)" }}>tight budget</span>.<br />
-                  We&apos;ve got you.
-                </h1>
-              </FadeIn>
-
-              <FadeIn delay={0.2}>
-                <p className="text-lg text-[var(--color-ink-70)] leading-relaxed mb-8">
-                  When your AC dies in August or your furnace quits in January, you don&apos;t have time to wait — and you shouldn&apos;t have to. Microf&apos;s lease-to-own program gets you approved fast, without a credit check, so your contractor can get to work.
-                </p>
-              </FadeIn>
-
-              <FadeIn delay={0.3}>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link
-                    href="https://dealer.microf.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 text-white font-semibold px-8 py-4 rounded-full transition-all hover:-translate-y-0.5 text-base"
-                    style={{ background: "var(--color-ember)" }}
-                  >
-                    Apply Now — Free & Fast
-                    <svg viewBox="0 0 16 16" fill="none" className="w-4 h-4" aria-hidden="true">
-                      <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </Link>
-                  <Link href="/homeowners/hvac" className="inline-flex items-center justify-center gap-2 font-semibold px-8 py-4 rounded-full transition-all text-base" style={{ border: "2px solid var(--color-ocean)", color: "var(--color-ocean)" }}>
-                    Browse HVAC Options
-                  </Link>
-                </div>
-              </FadeIn>
-            </div>
-          </div>
-        </section>
+        {/* ── HERO — Aurora background ─────────────────────────────── */}
+        <AuroraHero />
 
         {/* ── THE EMERGENCY NARRATIVE ──────────────────────────────── */}
         <section className="section-pad bg-white" aria-labelledby="emergency-heading">
