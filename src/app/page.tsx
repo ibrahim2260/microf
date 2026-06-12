@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import Link from "next/link";
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
@@ -7,7 +8,10 @@ import TestimonialCarousel from "@/components/sections/TestimonialCarousel";
 import FadeIn from "@/components/ui/FadeIn";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import MobileApplyCTA from "@/components/ui/MobileApplyCTA";
-import { GlowyWavesHero } from "@/components/ui/glowy-waves-hero-shadcnui";
+import { WeatherHero } from "@/components/ui/WeatherHero";
+import { getWeatherData } from "@/lib/weather";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Microf | Lease-to-Own HVAC & Water Heater Financing",
@@ -149,7 +153,14 @@ const steps = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ mood?: string; city?: string }>;
+}) {
+  const params = await searchParams;
+  const headersList = await headers();
+  const weatherData = await getWeatherData(headersList, params);
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -193,8 +204,8 @@ export default function HomePage() {
       <Nav />
       <main className="flex-1">
 
-        {/* ── HERO — Glowy Waves ───────────────────────────────────── */}
-        <GlowyWavesHero />
+        {/* ── HERO — Weather-aware ─────────────────────────────────── */}
+        <WeatherHero {...weatherData} />
 
         {/* ── AUDIENCE SPLIT ───────────────────────────────────────── */}
         <section className="section-pad bg-[var(--color-base)]" aria-label="Choose your path">

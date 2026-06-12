@@ -1,0 +1,557 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import type { Mood } from "@/lib/weather";
+
+// ── Products ──────────────────────────────────────────────────────────────────
+
+interface Product {
+  id: string;
+  word: string;
+  label: string;
+  href: string;
+}
+
+const PRODUCTS: Product[] = [
+  { id: "furnace",      word: "furnace",      label: "Furnaces",         href: "/homeowners/hvac" },
+  { id: "ac",           word: "AC",           label: "Air Conditioners", href: "/homeowners/hvac" },
+  { id: "heat-pump",    word: "heat pump",    label: "Heat Pumps",       href: "/homeowners/hvac" },
+  { id: "mini-split",   word: "mini-split",   label: "Mini-Splits",      href: "/homeowners/hvac" },
+  { id: "water-heater", word: "water heater", label: "Water Heaters",    href: "/homeowners/water-heaters" },
+];
+
+const ROTATION_ORDERS: Record<Mood, string[]> = {
+  cold:  ["furnace", "water-heater", "heat-pump", "ac", "mini-split"],
+  hot:   ["ac", "mini-split", "heat-pump", "water-heater", "furnace"],
+  mild:  ["water-heater", "heat-pump", "furnace", "ac", "mini-split"],
+};
+
+// ── Mood palettes — derived from existing design token family ─────────────────
+
+interface MoodConfig {
+  bgBase: string;
+  bgGradient: string;
+  ambientGlow: string;
+  bottomGlow: string;
+  textPrimary: string;
+  textMuted: string;
+  accent: string;
+  accentSoft: string;
+  chipBg: string;
+  chipBorder: string;
+  statsBg: string;
+  statsDivider: string;
+  chipIcon: string;
+  particleType: "snow" | "heat" | "none";
+  subheadline: string;
+}
+
+const MOOD_CONFIG: Record<Mood, MoodConfig> = {
+  cold: {
+    bgBase:      "#06111E",
+    bgGradient:  "radial-gradient(ellipse 130% 90% at 70% -5%, rgba(10,28,52,1) 0%, rgba(4,8,18,1) 60%)",
+    ambientGlow: "radial-gradient(ellipse 55% 45% at 72% 8%, rgba(96,184,232,0.10) 0%, transparent 65%)",
+    bottomGlow:  "radial-gradient(ellipse 90% 35% at 50% 105%, rgba(24,55,100,0.18) 0%, transparent 55%)",
+    textPrimary: "#FFFFFF",
+    textMuted:   "rgba(186,218,240,0.80)",
+    accent:      "#7DD3FC",
+    accentSoft:  "rgba(125,211,252,0.20)",
+    chipBg:      "rgba(125,211,252,0.08)",
+    chipBorder:  "rgba(125,211,252,0.22)",
+    statsBg:     "rgba(3,8,18,0.82)",
+    statsDivider:"rgba(125,211,252,0.16)",
+    chipIcon:    "❄️",
+    particleType:"snow",
+    subheadline: "When the temperature drops, financing shouldn't freeze you out. Microf gets you approved in minutes.",
+  },
+  hot: {
+    bgBase:      "#180800",
+    bgGradient:  "radial-gradient(ellipse 130% 90% at 30% 105%, rgba(40,12,0,1) 0%, rgba(10,4,0,1) 60%)",
+    ambientGlow: "radial-gradient(ellipse 65% 55% at 50% 100%, rgba(234,88,12,0.15) 0%, transparent 60%)",
+    bottomGlow:  "radial-gradient(ellipse 50% 40% at 50% 110%, rgba(249,115,22,0.12) 0%, transparent 60%)",
+    textPrimary: "#FFFFFF",
+    textMuted:   "rgba(255,198,140,0.80)",
+    accent:      "#FB923C",
+    accentSoft:  "rgba(251,146,60,0.22)",
+    chipBg:      "rgba(251,146,60,0.10)",
+    chipBorder:  "rgba(251,146,60,0.28)",
+    statsBg:     "rgba(10,3,0,0.82)",
+    statsDivider:"rgba(251,146,60,0.18)",
+    chipIcon:    "☀️",
+    particleType:"heat",
+    subheadline: "When the heat hits and your system quits, every hour matters. Get approved and cool down — today.",
+  },
+  mild: {
+    bgBase:      "#061E2E",
+    bgGradient:  "radial-gradient(ellipse 130% 90% at 65% -5%, rgba(10,35,52,1) 0%, rgba(4,14,22,1) 60%)",
+    ambientGlow: "radial-gradient(ellipse 55% 45% at 68% 10%, rgba(22,168,124,0.08) 0%, transparent 65%)",
+    bottomGlow:  "radial-gradient(ellipse 90% 35% at 50% 105%, rgba(12,45,63,0.25) 0%, transparent 55%)",
+    textPrimary: "#FFFFFF",
+    textMuted:   "rgba(167,225,205,0.80)",
+    accent:      "#34D399",
+    accentSoft:  "rgba(52,211,153,0.20)",
+    chipBg:      "rgba(22,168,124,0.10)",
+    chipBorder:  "rgba(22,168,124,0.25)",
+    statsBg:     "rgba(3,13,21,0.82)",
+    statsDivider:"rgba(22,168,124,0.15)",
+    chipIcon:    "☁️",
+    particleType:"none",
+    subheadline: "Great days are the right time to plan for the next breakdown. Microf approves you before the system fails.",
+  },
+};
+
+const STATS = [
+  { value: "43",       label: "States served" },
+  { value: "< 5 min",  label: "Avg. application time" },
+  { value: "Zero",     label: "Hard credit checks" },
+];
+
+// ── Particle system ───────────────────────────────────────────────────────────
+
+interface Particle {
+  x: number;
+  y: number;
+  size: number;
+  speed: number;
+  drift: number;
+  phase: number;
+  opacity: number;
+  opacityDir: number;
+}
+
+function makeSnowParticle(w: number, h: number, randomY: boolean): Particle {
+  return {
+    x: Math.random() * w,
+    y: randomY ? Math.random() * h : -8,
+    size: 1 + Math.random() * 2.5,
+    speed: 0.4 + Math.random() * 0.8,
+    drift: 0.4 + Math.random() * 0.6,
+    phase: Math.random() * Math.PI * 2,
+    opacity: 0.3 + Math.random() * 0.4,
+    opacityDir: 1,
+  };
+}
+
+function makeHeatParticle(w: number, h: number, randomY: boolean): Particle {
+  return {
+    x: Math.random() * w,
+    y: randomY ? Math.random() * h : h + 8,
+    size: 2 + Math.random() * 3,
+    speed: 0.4 + Math.random() * 1.0,
+    drift: 0.5 + Math.random() * 0.8,
+    phase: Math.random() * Math.PI * 2,
+    opacity: 0.08 + Math.random() * 0.12,
+    opacityDir: 1,
+  };
+}
+
+function ParticlesCanvas({ particleType }: { particleType: "snow" | "heat" }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const rafRef = useRef<number>(0);
+  const particlesRef = useRef<Particle[]>([]);
+  const pausedRef = useRef(false);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const MAX = window.innerWidth < 768 ? 20 : 40;
+
+    const init = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      particlesRef.current = Array.from({ length: MAX }, () =>
+        particleType === "snow"
+          ? makeSnowParticle(canvas.width, canvas.height, true)
+          : makeHeatParticle(canvas.width, canvas.height, true)
+      );
+    };
+    init();
+    window.addEventListener("resize", init);
+
+    const onVisibility = () => {
+      pausedRef.current = document.hidden;
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    const draw = (t: number) => {
+      rafRef.current = requestAnimationFrame(draw);
+      if (pausedRef.current) return;
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      for (const p of particlesRef.current) {
+        if (particleType === "snow") {
+          p.y += p.speed;
+          p.x += Math.sin(t * 0.001 * p.drift + p.phase) * 0.5;
+          if (p.y > H + 4) {
+            p.x = Math.random() * W;
+            p.y = -4;
+          }
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(200,230,255,${p.opacity})`;
+          ctx.fill();
+        } else {
+          p.y -= p.speed;
+          p.x += Math.sin(t * 0.0008 * p.drift + p.phase) * 0.7;
+          p.opacity += p.opacityDir * 0.001;
+          if (p.opacity > 0.22 || p.opacity < 0.04) p.opacityDir *= -1;
+          if (p.y < -10) {
+            p.x = Math.random() * W;
+            p.y = H + 10;
+          }
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,175,70,${p.opacity})`;
+          ctx.fill();
+        }
+      }
+    };
+    rafRef.current = requestAnimationFrame(draw);
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("resize", init);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [particleType]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full pointer-events-none"
+      aria-hidden="true"
+    />
+  );
+}
+
+// ── Main hero component ───────────────────────────────────────────────────────
+
+interface WeatherHeroProps {
+  mood: Mood;
+  temp: number | null;
+  city: string;
+  chipText: string;
+}
+
+export function WeatherHero({ mood, temp: _temp, city: _city, chipText }: WeatherHeroProps) {
+  const config = MOOD_CONFIG[mood];
+  const rotation = ROTATION_ORDERS[mood];
+
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  const currentProductId = rotation[activeIdx];
+  const currentProduct =
+    PRODUCTS.find((p) => p.id === currentProductId) ?? PRODUCTS[0];
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+    const id = setInterval(() => {
+      setActiveIdx((i) => (i + 1) % rotation.length);
+    }, 2600);
+    return () => clearInterval(id);
+  }, [reducedMotion, rotation.length]);
+
+  return (
+    <section
+      className="relative min-h-screen flex flex-col overflow-hidden"
+      style={{ background: config.bgBase }}
+      aria-label="Hero — Microf home comfort financing"
+    >
+      {/* ── Background atmosphere ───────────────────────────────────── */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        {/*
+          Atmospheric gradient layers. To replace with photography:
+          1. Add <Image src="/hero-bg.jpg" alt="" fill priority sizes="100vw" className="object-cover object-center" />
+          2. Keep the overlay divs below for mood tinting.
+        */}
+        <div className="absolute inset-0" style={{ background: config.bgGradient }} />
+        <div className="absolute inset-0" style={{ background: config.ambientGlow }} />
+        <div className="absolute inset-0" style={{ background: config.bottomGlow }} />
+        {/* Vignette */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(0,0,0,0.42) 100%)",
+          }}
+        />
+      </div>
+
+      {/* ── Particle canvas ─────────────────────────────────────────── */}
+      {!reducedMotion && config.particleType !== "none" && (
+        <ParticlesCanvas particleType={config.particleType} />
+      )}
+
+      {/* Screen-reader product list (static, always present) */}
+      <div className="sr-only">
+        <p>Products available for lease-to-own financing:</p>
+        <ul>
+          {PRODUCTS.map((p) => (
+            <li key={p.id}>
+              <Link href={p.href}>{p.label}</Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* ── Content ─────────────────────────────────────────────────── */}
+      <div className="relative z-10 flex-1 flex flex-col justify-center container-tight px-6 md:px-8 pt-28 md:pt-32 pb-32 md:pb-40">
+
+        {/* Weather chip */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-7 md:mb-9"
+        >
+          <span
+            className="inline-flex items-center gap-2 text-sm font-medium rounded-full px-3.5 py-1.5"
+            style={{
+              background: config.chipBg,
+              border: `1px solid ${config.chipBorder}`,
+              color: config.accent,
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+            }}
+          >
+            <span aria-hidden="true">{config.chipIcon}</span>
+            {chipText}
+          </span>
+        </motion.div>
+
+        {/* Headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.08 }}
+          className="max-w-4xl tracking-tight"
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(2.6rem, 6vw, 4.75rem)",
+            lineHeight: 1.05,
+            color: config.textPrimary,
+          }}
+        >
+          {"Your "}
+
+          {/*
+            CSS grid stacking: invisible "water heater" sizer always reserves
+            the widest word's space so the headline never reflows on rotation.
+          */}
+          <span
+            aria-live="off"
+            style={{ display: "inline-grid", verticalAlign: "baseline" }}
+          >
+            {/* Invisible sizer — widest possible word */}
+            <span
+              aria-hidden="true"
+              style={{ visibility: "hidden", gridRow: 1, gridColumn: 1 }}
+            >
+              water heater
+            </span>
+
+            {/* Visible rotating word */}
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={currentProduct.id}
+                initial={reducedMotion ? false : { opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={reducedMotion ? {} : { opacity: 0, y: -10 }}
+                transition={{ duration: 0.30, ease: [0.21, 0.47, 0.32, 0.98] }}
+                style={{
+                  gridRow: 1,
+                  gridColumn: 1,
+                  position: "relative",
+                  display: "inline-block",
+                  color: config.accent,
+                }}
+              >
+                {currentProduct.word}
+                {/* Accent underline */}
+                <span
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute",
+                    bottom: "-0.10em",
+                    left: 0,
+                    right: 0,
+                    height: "0.045em",
+                    borderRadius: "9999px",
+                    background: config.accent,
+                    opacity: 0.45,
+                  }}
+                />
+              </motion.span>
+            </AnimatePresence>
+          </span>
+
+          {" shouldn't get to decide your comfort."}
+        </motion.h1>
+
+        {/* Subheadline */}
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.18 }}
+          className="mt-6 max-w-xl text-base md:text-lg leading-relaxed"
+          style={{ color: config.textMuted }}
+        >
+          {config.subheadline}
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, delay: 0.26 }}
+          className="mt-9 flex flex-wrap gap-4 items-center"
+        >
+          <Link
+            href="https://dealer.microf.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 font-semibold px-7 py-3.5 rounded-full transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98]"
+            style={{
+              background: config.accent,
+              color: config.bgBase,
+              boxShadow: `0 0 28px ${config.accentSoft}, 0 4px 12px rgba(0,0,0,0.25)`,
+            }}
+          >
+            Apply Now
+            <svg
+              viewBox="0 0 16 16"
+              fill="none"
+              className="w-4 h-4"
+              aria-hidden="true"
+            >
+              <path
+                d="M3 8H13M13 8L9 4M13 8L9 12"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Link>
+
+          <Link
+            href="/homeowners"
+            className="inline-flex items-center gap-1.5 text-sm font-medium transition-all duration-200 hover:opacity-90"
+            style={{ color: config.textMuted }}
+          >
+            See how it works
+            <svg
+              viewBox="0 0 16 16"
+              fill="none"
+              className="w-3.5 h-3.5"
+              aria-hidden="true"
+            >
+              <path
+                d="M6 3L11 8L6 13"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Link>
+        </motion.div>
+
+        {/* Product pills — synced to rotating word */}
+        <motion.nav
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, delay: 0.36 }}
+          aria-label="Browse financing by product"
+          className="mt-10 flex flex-wrap gap-2.5"
+        >
+          {PRODUCTS.map((product) => {
+            const isActive = product.id === currentProduct.id;
+            return (
+              <Link
+                key={product.id}
+                href={product.href}
+                className="inline-flex items-center text-sm font-medium rounded-full px-3.5 py-1.5 transition-all duration-300"
+                style={{
+                  background: isActive
+                    ? config.accentSoft
+                    : "rgba(255,255,255,0.05)",
+                  border: `1px solid ${
+                    isActive
+                      ? config.accent
+                      : "rgba(255,255,255,0.10)"
+                  }`,
+                  color: isActive ? config.accent : config.textMuted,
+                  boxShadow: isActive
+                    ? `0 0 14px ${config.accentSoft}`
+                    : "none",
+                }}
+                aria-current={isActive ? "true" : undefined}
+              >
+                {product.label}
+              </Link>
+            );
+          })}
+        </motion.nav>
+      </div>
+
+      {/* ── Stats bar ───────────────────────────────────────────────── */}
+      <div
+        className="relative z-10 border-t"
+        style={{
+          background: config.statsBg,
+          borderColor: config.statsDivider,
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
+        }}
+      >
+        <div className="container-tight px-6 md:px-8 py-5 flex flex-wrap gap-x-10 gap-y-4 justify-center sm:justify-start">
+          {STATS.map(({ value, label }, i) => (
+            <div key={label} className="flex items-center gap-4">
+              {i > 0 && (
+                <div
+                  className="hidden sm:block w-px h-9 flex-shrink-0"
+                  style={{ background: config.statsDivider }}
+                  aria-hidden="true"
+                />
+              )}
+              <div>
+                <p
+                  className="text-xl font-bold leading-none"
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    color: config.textPrimary,
+                  }}
+                >
+                  {value}
+                </p>
+                <p
+                  className="text-xs mt-1 font-medium"
+                  style={{ color: config.textMuted }}
+                >
+                  {label}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
