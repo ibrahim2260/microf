@@ -521,33 +521,32 @@ export function WeatherHero({ mood, temp: _temp, city: _city, chipText }: Weathe
           WebkitBackdropFilter: "blur(16px)",
         }}
       >
-        <div className="container-tight px-6 md:px-8 py-5 flex flex-wrap gap-x-10 gap-y-4 justify-center sm:justify-start">
+        <div className="py-6 px-6 grid grid-cols-3 max-w-lg mx-auto">
           {STATS.map(({ value, label }, i) => (
-            <div key={label} className="flex items-center gap-4">
-              {i > 0 && (
-                <div
-                  className="hidden sm:block w-px h-9 flex-shrink-0"
-                  style={{ background: config.statsDivider }}
-                  aria-hidden="true"
-                />
-              )}
-              <div>
-                <p
-                  className="text-xl font-bold leading-none"
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    color: config.textPrimary,
-                  }}
-                >
-                  {value}
-                </p>
-                <p
-                  className="text-xs mt-1 font-medium"
-                  style={{ color: config.textMuted }}
-                >
-                  {label}
-                </p>
-              </div>
+            <div
+              key={label}
+              className="flex flex-col items-center text-center px-4"
+              style={{
+                borderRight: i < STATS.length - 1
+                  ? `1px solid ${config.statsDivider}`
+                  : "none",
+              }}
+            >
+              <p
+                className="text-2xl font-bold leading-none"
+                style={{
+                  fontFamily: "var(--font-display)",
+                  color: config.textPrimary,
+                }}
+              >
+                {value}
+              </p>
+              <p
+                className="text-xs mt-1.5 font-medium leading-snug"
+                style={{ color: config.textMuted }}
+              >
+                {label}
+              </p>
             </div>
           ))}
         </div>
