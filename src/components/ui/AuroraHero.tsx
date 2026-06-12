@@ -17,64 +17,62 @@ export function AuroraHero() {
       style={{ background: "#060C14" }}
       aria-label="Homeowners hero"
     >
-      {/* ── Aurora layers ────────────────────────────────────────── */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+      {/* ── Aurora blobs — each is a positioned, blurred element that physically moves ── */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
 
-        {/* Base deep-ocean gradient */}
+        {/* Blob 1 — ocean blue, top-left */}
         <div
-          className="absolute inset-0 opacity-80"
+          className="absolute rounded-full"
           style={{
-            background:
-              "linear-gradient(135deg, rgba(12,45,63,0.55) 0%, rgba(26,31,46,0.40) 50%, rgba(12,45,63,0.55) 100%)",
+            width: 700, height: 560,
+            top: "-10%", left: "5%",
+            background: "radial-gradient(ellipse at center, rgba(26,85,114,0.65) 0%, transparent 70%)",
+            filter: "blur(72px)",
+            animation: "aurora1 9s ease-in-out infinite alternate",
           }}
         />
 
-        {/* Wave 1 — ocean sweep, upper centre */}
+        {/* Blob 2 — ember orange, right */}
         <div
-          className="absolute inset-0 opacity-60"
+          className="absolute rounded-full"
           style={{
-            background:
-              "radial-gradient(ellipse 800px 600px at 50% 20%, rgba(26,85,114,0.45) 0%, transparent 55%)",
-            animation: "aurora1 8s ease-in-out infinite alternate",
+            width: 580, height: 460,
+            top: "5%", right: "-5%",
+            background: "radial-gradient(ellipse at center, rgba(232,98,26,0.55) 0%, transparent 70%)",
+            filter: "blur(80px)",
+            animation: "aurora2 7s ease-in-out infinite alternate-reverse",
           }}
         />
 
-        {/* Wave 2 — ember bloom, right */}
+        {/* Blob 3 — warm amber, bottom-left */}
         <div
-          className="absolute inset-0 opacity-50"
+          className="absolute rounded-full"
           style={{
-            background:
-              "radial-gradient(ellipse 600px 400px at 80% 35%, rgba(232,98,26,0.38) 0%, transparent 52%)",
-            animation: "aurora2 6s ease-in-out infinite alternate-reverse",
+            width: 640, height: 500,
+            bottom: "0%", left: "10%",
+            background: "radial-gradient(ellipse at center, rgba(255,122,56,0.42) 0%, transparent 70%)",
+            filter: "blur(90px)",
+            animation: "aurora3 11s ease-in-out infinite alternate",
           }}
         />
 
-        {/* Wave 3 — warm ember, left-lower */}
+        {/* Blob 4 — mint green, bottom-right */}
         <div
-          className="absolute inset-0 opacity-40"
+          className="absolute rounded-full"
           style={{
-            background:
-              "radial-gradient(ellipse 700px 500px at 20% 65%, rgba(255,122,56,0.28) 0%, transparent 52%)",
-            animation: "aurora3 10s ease-in-out infinite alternate",
+            width: 520, height: 340,
+            bottom: "10%", right: "10%",
+            background: "radial-gradient(ellipse at center, rgba(22,168,124,0.38) 0%, transparent 70%)",
+            filter: "blur(80px)",
+            animation: "aurora4 8s ease-in-out infinite alternate-reverse",
           }}
         />
 
-        {/* Wave 4 — mint accent, lower right */}
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{
-            background:
-              "radial-gradient(ellipse 900px 300px at 65% 82%, rgba(22,168,124,0.22) 0%, transparent 52%)",
-            animation: "aurora4 7s ease-in-out infinite alternate-reverse",
-          }}
-        />
-
-        {/* Depth vignette */}
+        {/* Vignette to ground the content */}
         <div
           className="absolute inset-0"
           style={{
-            background:
-              "linear-gradient(to top, rgba(6,12,20,0.35) 0%, transparent 50%, rgba(6,12,20,0.15) 100%)",
+            background: "radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, rgba(6,12,20,0.55) 100%)",
           }}
         />
       </div>
