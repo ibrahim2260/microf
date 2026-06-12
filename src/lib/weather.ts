@@ -20,7 +20,7 @@ function classifyMood(tempF: number): Mood {
 function buildChipText(mood: Mood, temp: number, city: string): string {
   if (mood === "cold") return `${temp}° tonight in ${city}`;
   if (mood === "hot") return `${temp}° right now in ${city}`;
-  return `${temp}° in ${city} — enjoy it while it lasts`;
+  return `${temp}° and golden in ${city}`;
 }
 
 export async function getWeatherData(
@@ -62,11 +62,15 @@ export async function getWeatherData(
 
     return { mood, temp, city, chipText: buildChipText(mood, temp, city) };
   } catch {
+    const mood = overrideMood ?? "mild";
     return {
-      mood: overrideMood ?? "mild",
+      mood,
       temp: null,
       city,
-      chipText: "Comfort, whatever the weather",
+      chipText:
+        mood === "mild"
+          ? "Wherever you are, whatever quits"
+          : "Comfort, whatever the weather",
     };
   }
 }

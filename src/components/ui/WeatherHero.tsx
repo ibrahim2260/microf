@@ -22,13 +22,40 @@ const PRODUCTS: Product[] = [
   { id: "water-heater", word: "water heater", label: "Water Heaters",    href: "/homeowners/water-heaters" },
 ];
 
-const ROTATION_ORDERS: Record<Mood, string[]> = {
-  cold:  ["furnace", "water-heater", "heat-pump", "ac", "mini-split"],
-  hot:   ["ac", "mini-split", "heat-pump", "water-heater", "furnace"],
-  mild:  ["water-heater", "heat-pump", "furnace", "ac", "mini-split"],
+// ── Rotation items ────────────────────────────────────────────────────────────
+// COLD/HOT rotate product words; MILD rotates problem phrases mapped to a pill.
+
+interface RotationItem {
+  id: string;
+  displayText: string;
+  activeProductId: string;
+}
+
+// cold / hot: product-word rotation
+const COLD_HOT_ORDERS: Record<"cold" | "hot", string[]> = {
+  cold: ["furnace", "water-heater", "heat-pump", "ac", "mini-split"],
+  hot:  ["ac", "mini-split", "heat-pump", "water-heater", "furnace"],
 };
 
-// ── Mood palettes — derived from existing design token family ─────────────────
+// mild: problem-phrase rotation → mapped pill
+// "silent mini-split" is the longest phrase and sets the headline sizer width
+const MILD_PROBLEMS: RotationItem[] = [
+  { id: "cold-shower",   displayText: "cold shower",       activeProductId: "water-heater" },
+  { id: "dead-furnace",  displayText: "dead furnace",      activeProductId: "furnace" },
+  { id: "broken-ac",     displayText: "broken AC",         activeProductId: "ac" },
+  { id: "tired-pump",    displayText: "tired heat pump",   activeProductId: "heat-pump" },
+  { id: "silent-split",  displayText: "silent mini-split", activeProductId: "mini-split" },
+];
+
+function getRotationItems(mood: Mood): RotationItem[] {
+  if (mood === "mild") return MILD_PROBLEMS;
+  return COLD_HOT_ORDERS[mood].map((id) => {
+    const p = PRODUCTS.find((pr) => pr.id === id)!;
+    return { id: p.id, displayText: p.word, activeProductId: p.id };
+  });
+}
+
+// ── Mood palettes ─────────────────────────────────────────────────────────────
 
 interface MoodConfig {
   bgBase: string;
@@ -44,61 +71,71 @@ interface MoodConfig {
   statsBg: string;
   statsDivider: string;
   chipIcon: string;
-  particleType: "snow" | "heat" | "none";
+  particleType: "snow" | "heat" | "motes" | "none";
   subheadline: string;
+  // min-width sizer text for the rotating headline slot
+  headlineSizer: string;
 }
 
 const MOOD_CONFIG: Record<Mood, MoodConfig> = {
   cold: {
-    bgBase:      "#06111E",
-    bgGradient:  "radial-gradient(ellipse 130% 90% at 70% -5%, rgba(10,28,52,1) 0%, rgba(4,8,18,1) 60%)",
-    ambientGlow: "radial-gradient(ellipse 55% 45% at 72% 8%, rgba(96,184,232,0.10) 0%, transparent 65%)",
-    bottomGlow:  "radial-gradient(ellipse 90% 35% at 50% 105%, rgba(24,55,100,0.18) 0%, transparent 55%)",
-    textPrimary: "#FFFFFF",
-    textMuted:   "rgba(186,218,240,0.80)",
-    accent:      "#7DD3FC",
-    accentSoft:  "rgba(125,211,252,0.20)",
-    chipBg:      "rgba(125,211,252,0.08)",
-    chipBorder:  "rgba(125,211,252,0.22)",
-    statsBg:     "rgba(3,8,18,0.82)",
-    statsDivider:"rgba(125,211,252,0.16)",
-    chipIcon:    "❄️",
-    particleType:"snow",
-    subheadline: "When the temperature drops, financing shouldn't freeze you out. Microf gets you approved in minutes.",
+    bgBase:        "#06111E",
+    bgGradient:    "radial-gradient(ellipse 130% 90% at 70% -5%, rgba(10,28,52,1) 0%, rgba(4,8,18,1) 60%)",
+    ambientGlow:   "radial-gradient(ellipse 55% 45% at 72% 8%, rgba(96,184,232,0.10) 0%, transparent 65%)",
+    bottomGlow:    "radial-gradient(ellipse 90% 35% at 50% 105%, rgba(24,55,100,0.18) 0%, transparent 55%)",
+    textPrimary:   "#FFFFFF",
+    textMuted:     "rgba(186,218,240,0.80)",
+    accent:        "#7DD3FC",
+    accentSoft:    "rgba(125,211,252,0.20)",
+    chipBg:        "rgba(125,211,252,0.08)",
+    chipBorder:    "rgba(125,211,252,0.22)",
+    statsBg:       "rgba(3,8,18,0.82)",
+    statsDivider:  "rgba(125,211,252,0.16)",
+    chipIcon:      "❄️",
+    particleType:  "snow",
+    subheadline:   "When the temperature drops, financing shouldn't freeze you out. Microf gets you approved in minutes.",
+    headlineSizer: "water heater",
   },
   hot: {
-    bgBase:      "#180800",
-    bgGradient:  "radial-gradient(ellipse 130% 90% at 30% 105%, rgba(40,12,0,1) 0%, rgba(10,4,0,1) 60%)",
-    ambientGlow: "radial-gradient(ellipse 65% 55% at 50% 100%, rgba(234,88,12,0.15) 0%, transparent 60%)",
-    bottomGlow:  "radial-gradient(ellipse 50% 40% at 50% 110%, rgba(249,115,22,0.12) 0%, transparent 60%)",
-    textPrimary: "#FFFFFF",
-    textMuted:   "rgba(255,198,140,0.80)",
-    accent:      "#FB923C",
-    accentSoft:  "rgba(251,146,60,0.22)",
-    chipBg:      "rgba(251,146,60,0.10)",
-    chipBorder:  "rgba(251,146,60,0.28)",
-    statsBg:     "rgba(10,3,0,0.82)",
-    statsDivider:"rgba(251,146,60,0.18)",
-    chipIcon:    "☀️",
-    particleType:"heat",
-    subheadline: "When the heat hits and your system quits, every hour matters. Get approved and cool down — today.",
+    bgBase:        "#180800",
+    bgGradient:    "radial-gradient(ellipse 130% 90% at 30% 105%, rgba(40,12,0,1) 0%, rgba(10,4,0,1) 60%)",
+    ambientGlow:   "radial-gradient(ellipse 65% 55% at 50% 100%, rgba(234,88,12,0.15) 0%, transparent 60%)",
+    bottomGlow:    "radial-gradient(ellipse 50% 40% at 50% 110%, rgba(249,115,22,0.12) 0%, transparent 60%)",
+    textPrimary:   "#FFFFFF",
+    textMuted:     "rgba(255,198,140,0.80)",
+    accent:        "#FB923C",
+    accentSoft:    "rgba(251,146,60,0.22)",
+    chipBg:        "rgba(251,146,60,0.10)",
+    chipBorder:    "rgba(251,146,60,0.28)",
+    statsBg:       "rgba(10,3,0,0.82)",
+    statsDivider:  "rgba(251,146,60,0.18)",
+    chipIcon:      "☀️",
+    particleType:  "heat",
+    subheadline:   "When the heat hits and your system quits, every hour matters. Get approved and cool down — today.",
+    headlineSizer: "water heater",
   },
+  // ── GOLDEN HOUR — deepest, most premium mood ──────────────────────────────
+  // bg: #130E24 deep twilight plum (ink #1A1F2E shifted ~30° toward violet)
+  // accent: #F0C070 warm lamplight gold (ember #E8621A cooled, softened, brightened)
+  // WCAG AA verified: #F0C070 on #130E24 → 12.2:1 (passes AAA)
+  // muted rgba(240,192,112,0.80) composited → 8.0:1 (passes AAA)
   mild: {
-    bgBase:      "#061E2E",
-    bgGradient:  "radial-gradient(ellipse 130% 90% at 65% -5%, rgba(10,35,52,1) 0%, rgba(4,14,22,1) 60%)",
-    ambientGlow: "radial-gradient(ellipse 55% 45% at 68% 10%, rgba(22,168,124,0.08) 0%, transparent 65%)",
-    bottomGlow:  "radial-gradient(ellipse 90% 35% at 50% 105%, rgba(12,45,63,0.25) 0%, transparent 55%)",
-    textPrimary: "#FFFFFF",
-    textMuted:   "rgba(167,225,205,0.80)",
-    accent:      "#34D399",
-    accentSoft:  "rgba(52,211,153,0.20)",
-    chipBg:      "rgba(22,168,124,0.10)",
-    chipBorder:  "rgba(22,168,124,0.25)",
-    statsBg:     "rgba(3,13,21,0.82)",
-    statsDivider:"rgba(22,168,124,0.15)",
-    chipIcon:    "☁️",
-    particleType:"none",
-    subheadline: "Great days are the right time to plan for the next breakdown. Microf approves you before the system fails.",
+    bgBase:        "#130E24",
+    bgGradient:    "radial-gradient(ellipse 130% 90% at 60% -5%, rgba(28,18,50,1) 0%, rgba(10,8,20,1) 60%)",
+    ambientGlow:   "radial-gradient(ellipse 55% 45% at 75% 15%, rgba(240,192,112,0.09) 0%, transparent 65%)",
+    bottomGlow:    "radial-gradient(ellipse 80% 40% at 50% 100%, rgba(40,28,70,0.30) 0%, transparent 55%)",
+    textPrimary:   "#FFFFFF",
+    textMuted:     "rgba(240,192,112,0.80)",
+    accent:        "#F0C070",
+    accentSoft:    "rgba(240,192,112,0.22)",
+    chipBg:        "rgba(240,192,112,0.10)",
+    chipBorder:    "rgba(240,192,112,0.28)",
+    statsBg:       "rgba(10,8,20,0.82)",
+    statsDivider:  "rgba(240,192,112,0.18)",
+    chipIcon:      "🌅",
+    particleType:  "motes",
+    subheadline:   "Water heaters and HVAC don't check the forecast. Whatever quits, whenever it quits — a decision in minutes, no hard credit check, all credit backgrounds welcome.",
+    headlineSizer: "silent mini-split",
   },
 };
 
@@ -147,11 +184,36 @@ function makeHeatParticle(w: number, h: number, randomY: boolean): Particle {
   };
 }
 
-function ParticlesCanvas({ particleType }: { particleType: "snow" | "heat" }) {
+function makeMoteParticle(w: number, h: number, randomY: boolean): Particle {
+  return {
+    x: Math.random() * w,
+    y: randomY ? Math.random() * h : h + 8,
+    size: 1.5 + Math.random() * 2,
+    speed: 0.15 + Math.random() * 0.25,
+    drift: 0.3 + Math.random() * 0.5,
+    phase: Math.random() * Math.PI * 2,
+    opacity: 0.15 + Math.random() * 0.25,
+    opacityDir: Math.random() > 0.5 ? 1 : -1,
+  };
+}
+
+// Sine-line descriptors for the MILD motes layer
+const SINE_LINES = [
+  { yFrac: 0.22, amp: 10, xFreq: 0.012, tSpeed: 0.00015, phase: 0.0,  opacity: 0.09 },
+  { yFrac: 0.40, amp:  8, xFreq: 0.009, tSpeed: 0.00012, phase: 2.1,  opacity: 0.07 },
+  { yFrac: 0.62, amp: 13, xFreq: 0.015, tSpeed: 0.00018, phase: 4.3,  opacity: 0.10 },
+  { yFrac: 0.78, amp:  7, xFreq: 0.011, tSpeed: 0.00010, phase: 1.5,  opacity: 0.08 },
+];
+
+function ParticlesCanvas({
+  particleType,
+}: {
+  particleType: "snow" | "heat" | "motes";
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const rafRef = useRef<number>(0);
-  const particlesRef = useRef<Particle[]>([]);
-  const pausedRef = useRef(false);
+  const rafRef    = useRef<number>(0);
+  const particles = useRef<Particle[]>([]);
+  const paused    = useRef(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -159,56 +221,88 @@ function ParticlesCanvas({ particleType }: { particleType: "snow" | "heat" }) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const MAX = window.innerWidth < 768 ? 20 : 40;
+    const isMobile = window.innerWidth < 768;
+    const MAX =
+      particleType === "motes" ? (isMobile ? 12 : 20) :
+      isMobile ? 20 : 40;
 
     const init = () => {
-      canvas.width = canvas.offsetWidth;
+      canvas.width  = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
-      particlesRef.current = Array.from({ length: MAX }, () =>
-        particleType === "snow"
-          ? makeSnowParticle(canvas.width, canvas.height, true)
-          : makeHeatParticle(canvas.width, canvas.height, true)
-      );
+      particles.current = Array.from({ length: MAX }, () => {
+        if (particleType === "snow")  return makeSnowParticle(canvas.width, canvas.height, true);
+        if (particleType === "motes") return makeMoteParticle(canvas.width, canvas.height, true);
+        return makeHeatParticle(canvas.width, canvas.height, true);
+      });
     };
     init();
     window.addEventListener("resize", init);
 
-    const onVisibility = () => {
-      pausedRef.current = document.hidden;
-    };
-    document.addEventListener("visibilitychange", onVisibility);
+    const onVis = () => { paused.current = document.hidden; };
+    document.addEventListener("visibilitychange", onVis);
 
     const draw = (t: number) => {
       rafRef.current = requestAnimationFrame(draw);
-      if (pausedRef.current) return;
+      if (paused.current) return;
       const W = canvas.width;
       const H = canvas.height;
       ctx.clearRect(0, 0, W, H);
 
-      for (const p of particlesRef.current) {
-        if (particleType === "snow") {
+      if (particleType === "snow") {
+        for (const p of particles.current) {
           p.y += p.speed;
           p.x += Math.sin(t * 0.001 * p.drift + p.phase) * 0.5;
-          if (p.y > H + 4) {
-            p.x = Math.random() * W;
-            p.y = -4;
-          }
+          if (p.y > H + 4) { p.x = Math.random() * W; p.y = -4; }
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(200,230,255,${p.opacity})`;
           ctx.fill();
-        } else {
+        }
+
+      } else if (particleType === "heat") {
+        for (const p of particles.current) {
           p.y -= p.speed;
           p.x += Math.sin(t * 0.0008 * p.drift + p.phase) * 0.7;
           p.opacity += p.opacityDir * 0.001;
           if (p.opacity > 0.22 || p.opacity < 0.04) p.opacityDir *= -1;
-          if (p.y < -10) {
-            p.x = Math.random() * W;
-            p.y = H + 10;
-          }
+          if (p.y < -10) { p.x = Math.random() * W; p.y = H + 10; }
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(255,175,70,${p.opacity})`;
+          ctx.fill();
+        }
+
+      } else {
+        // ── motes: sine lines first (behind motes) ──────────────────
+        ctx.save();
+        ctx.lineWidth = 1;
+        for (const line of SINE_LINES) {
+          const baseY = H * line.yFrac;
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(240,192,112,${line.opacity})`;
+          const step = 5;
+          for (let x = 0; x <= W + step; x += step) {
+            const y = baseY + line.amp * Math.sin(x * line.xFreq - t * line.tSpeed + line.phase);
+            x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+        ctx.restore();
+
+        // ── motes: warm gold dust drifting upward ───────────────────
+        for (const p of particles.current) {
+          p.y -= p.speed;
+          p.x += Math.sin(t * 0.0005 * p.drift + p.phase) * 0.3;
+          p.opacity += p.opacityDir * 0.003;
+          if (p.opacity > 0.45 || p.opacity < 0.12) p.opacityDir *= -1;
+          if (p.y < -10) {
+            p.x = Math.random() * W;
+            p.y = H + 10;
+            p.opacity = 0.15 + Math.random() * 0.20;
+          }
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(240,192,112,${p.opacity})`;
           ctx.fill();
         }
       }
@@ -218,7 +312,7 @@ function ParticlesCanvas({ particleType }: { particleType: "snow" | "heat" }) {
     return () => {
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener("resize", init);
-      document.removeEventListener("visibilitychange", onVisibility);
+      document.removeEventListener("visibilitychange", onVis);
     };
   }, [particleType]);
 
@@ -241,15 +335,14 @@ interface WeatherHeroProps {
 }
 
 export function WeatherHero({ mood, temp: _temp, city: _city, chipText }: WeatherHeroProps) {
-  const config = MOOD_CONFIG[mood];
-  const rotation = ROTATION_ORDERS[mood];
+  const config        = MOOD_CONFIG[mood];
+  const rotationItems = getRotationItems(mood);
 
-  const [activeIdx, setActiveIdx] = useState(0);
+  const [activeIdx,     setActiveIdx]     = useState(0);
   const [reducedMotion, setReducedMotion] = useState(false);
 
-  const currentProductId = rotation[activeIdx];
-  const currentProduct =
-    PRODUCTS.find((p) => p.id === currentProductId) ?? PRODUCTS[0];
+  const current         = rotationItems[activeIdx];
+  const activeProductId = current.activeProductId;
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -261,11 +354,12 @@ export function WeatherHero({ mood, temp: _temp, city: _city, chipText }: Weathe
 
   useEffect(() => {
     if (reducedMotion) return;
-    const id = setInterval(() => {
-      setActiveIdx((i) => (i + 1) % rotation.length);
-    }, 2600);
+    const id = setInterval(
+      () => setActiveIdx((i) => (i + 1) % rotationItems.length),
+      2600
+    );
     return () => clearInterval(id);
-  }, [reducedMotion, rotation.length]);
+  }, [reducedMotion, rotationItems.length]);
 
   return (
     <section
@@ -276,14 +370,14 @@ export function WeatherHero({ mood, temp: _temp, city: _city, chipText }: Weathe
       {/* ── Background atmosphere ───────────────────────────────────── */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         {/*
-          Atmospheric gradient layers. To replace with photography:
-          1. Add <Image src="/hero-bg.jpg" alt="" fill priority sizes="100vw" className="object-cover object-center" />
-          2. Keep the overlay divs below for mood tinting.
+          To replace with photography:
+            <Image src="/hero-bg.jpg" alt="" fill priority sizes="100vw"
+              className="object-cover object-center" />
+          then keep the overlay divs below for mood tinting.
         */}
         <div className="absolute inset-0" style={{ background: config.bgGradient }} />
         <div className="absolute inset-0" style={{ background: config.ambientGlow }} />
         <div className="absolute inset-0" style={{ background: config.bottomGlow }} />
-        {/* Vignette */}
         <div
           className="absolute inset-0"
           style={{
@@ -323,11 +417,11 @@ export function WeatherHero({ mood, temp: _temp, city: _city, chipText }: Weathe
           <span
             className="inline-flex items-center gap-2 text-sm font-medium rounded-full px-3.5 py-1.5"
             style={{
-              background: config.chipBg,
-              border: `1px solid ${config.chipBorder}`,
-              color: config.accent,
-              backdropFilter: "blur(8px)",
-              WebkitBackdropFilter: "blur(8px)",
+              background:          config.chipBg,
+              border:              `1px solid ${config.chipBorder}`,
+              color:               config.accent,
+              backdropFilter:      "blur(8px)",
+              WebkitBackdropFilter:"blur(8px)",
             }}
           >
             <span aria-hidden="true">{config.chipIcon}</span>
@@ -335,7 +429,7 @@ export function WeatherHero({ mood, temp: _temp, city: _city, chipText }: Weathe
           </span>
         </motion.div>
 
-        {/* Headline */}
+        {/* ── Headline — branches on mood ─────────────────────────── */}
         <motion.h1
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -343,65 +437,34 @@ export function WeatherHero({ mood, temp: _temp, city: _city, chipText }: Weathe
           className="max-w-4xl tracking-tight"
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: "clamp(2.6rem, 6vw, 4.75rem)",
+            fontSize:   "clamp(2.6rem, 6vw, 4.75rem)",
             lineHeight: 1.05,
-            color: config.textPrimary,
+            color:      config.textPrimary,
           }}
         >
-          {"Your "}
-
-          {/*
-            CSS grid stacking: invisible "water heater" sizer always reserves
-            the widest word's space so the headline never reflows on rotation.
-          */}
-          <span
-            aria-live="off"
-            style={{ display: "inline-grid", verticalAlign: "baseline" }}
-          >
-            {/* Invisible sizer — widest possible word */}
-            <span
-              aria-hidden="true"
-              style={{ visibility: "hidden", gridRow: 1, gridColumn: 1 }}
-            >
-              water heater
-            </span>
-
-            {/* Visible rotating word */}
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={currentProduct.id}
-                initial={reducedMotion ? false : { opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={reducedMotion ? {} : { opacity: 0, y: -10 }}
-                transition={{ duration: 0.30, ease: [0.21, 0.47, 0.32, 0.98] }}
-                style={{
-                  gridRow: 1,
-                  gridColumn: 1,
-                  position: "relative",
-                  display: "inline-block",
-                  color: config.accent,
-                }}
-              >
-                {currentProduct.word}
-                {/* Accent underline */}
-                <span
-                  aria-hidden="true"
-                  style={{
-                    position: "absolute",
-                    bottom: "-0.10em",
-                    left: 0,
-                    right: 0,
-                    height: "0.045em",
-                    borderRadius: "9999px",
-                    background: config.accent,
-                    opacity: 0.45,
-                  }}
-                />
-              </motion.span>
-            </AnimatePresence>
-          </span>
-
-          {" shouldn't get to decide your comfort."}
+          {mood === "mild" ? (
+            <>
+              {"Perfect weather outside won't fix a "}
+              <RotatingSlot
+                current={current}
+                sizer={config.headlineSizer}
+                accent={config.accent}
+                reducedMotion={reducedMotion}
+              />
+              {" inside."}
+            </>
+          ) : (
+            <>
+              {"Your "}
+              <RotatingSlot
+                current={current}
+                sizer={config.headlineSizer}
+                accent={config.accent}
+                reducedMotion={reducedMotion}
+              />
+              {" shouldn't get to decide your comfort."}
+            </>
+          )}
         </motion.h1>
 
         {/* Subheadline */}
@@ -428,25 +491,14 @@ export function WeatherHero({ mood, temp: _temp, city: _city, chipText }: Weathe
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 font-semibold px-7 py-3.5 rounded-full transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98]"
             style={{
-              background: config.accent,
-              color: config.bgBase,
-              boxShadow: `0 0 28px ${config.accentSoft}, 0 4px 12px rgba(0,0,0,0.25)`,
+              background:  config.accent,
+              color:       config.bgBase,
+              boxShadow:   `0 0 28px ${config.accentSoft}, 0 4px 12px rgba(0,0,0,0.25)`,
             }}
           >
             Apply Now
-            <svg
-              viewBox="0 0 16 16"
-              fill="none"
-              className="w-4 h-4"
-              aria-hidden="true"
-            >
-              <path
-                d="M3 8H13M13 8L9 4M13 8L9 12"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+            <svg viewBox="0 0 16 16" fill="none" className="w-4 h-4" aria-hidden="true">
+              <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </Link>
 
@@ -456,24 +508,13 @@ export function WeatherHero({ mood, temp: _temp, city: _city, chipText }: Weathe
             style={{ color: config.textMuted }}
           >
             See how it works
-            <svg
-              viewBox="0 0 16 16"
-              fill="none"
-              className="w-3.5 h-3.5"
-              aria-hidden="true"
-            >
-              <path
-                d="M6 3L11 8L6 13"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+            <svg viewBox="0 0 16 16" fill="none" className="w-3.5 h-3.5" aria-hidden="true">
+              <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </Link>
         </motion.div>
 
-        {/* Product pills — synced to rotating word */}
+        {/* Product pills — active pill tracks rotating problem/word */}
         <motion.nav
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -482,25 +523,17 @@ export function WeatherHero({ mood, temp: _temp, city: _city, chipText }: Weathe
           className="mt-10 flex flex-wrap gap-2.5"
         >
           {PRODUCTS.map((product) => {
-            const isActive = product.id === currentProduct.id;
+            const isActive = product.id === activeProductId;
             return (
               <Link
                 key={product.id}
                 href={product.href}
                 className="inline-flex items-center text-sm font-medium rounded-full px-3.5 py-1.5 transition-all duration-300"
                 style={{
-                  background: isActive
-                    ? config.accentSoft
-                    : "rgba(255,255,255,0.05)",
-                  border: `1px solid ${
-                    isActive
-                      ? config.accent
-                      : "rgba(255,255,255,0.10)"
-                  }`,
-                  color: isActive ? config.accent : config.textMuted,
-                  boxShadow: isActive
-                    ? `0 0 14px ${config.accentSoft}`
-                    : "none",
+                  background: isActive ? config.accentSoft : "rgba(255,255,255,0.05)",
+                  border:     `1px solid ${isActive ? config.accent : "rgba(255,255,255,0.10)"}`,
+                  color:      isActive ? config.accent : config.textMuted,
+                  boxShadow:  isActive ? `0 0 14px ${config.accentSoft}` : "none",
                 }}
                 aria-current={isActive ? "true" : undefined}
               >
@@ -515,9 +548,9 @@ export function WeatherHero({ mood, temp: _temp, city: _city, chipText }: Weathe
       <div
         className="relative z-10 border-t"
         style={{
-          background: config.statsBg,
-          borderColor: config.statsDivider,
-          backdropFilter: "blur(16px)",
+          background:           config.statsBg,
+          borderColor:          config.statsDivider,
+          backdropFilter:       "blur(16px)",
           WebkitBackdropFilter: "blur(16px)",
         }}
       >
@@ -534,10 +567,7 @@ export function WeatherHero({ mood, temp: _temp, city: _city, chipText }: Weathe
             >
               <p
                 className="text-2xl font-bold leading-none"
-                style={{
-                  fontFamily: "var(--font-display)",
-                  color: config.textPrimary,
-                }}
+                style={{ fontFamily: "var(--font-display)", color: config.textPrimary }}
               >
                 {value}
               </p>
@@ -552,5 +582,66 @@ export function WeatherHero({ mood, temp: _temp, city: _city, chipText }: Weathe
         </div>
       </div>
     </section>
+  );
+}
+
+// ── Rotating headline slot ────────────────────────────────────────────────────
+// Extracted to keep the headline JSX readable. Grid-stacking trick prevents
+// layout shift: the invisible sizer (widest possible text) always reserves
+// space; the visible animated span overlays it in the same grid cell.
+
+function RotatingSlot({
+  current,
+  sizer,
+  accent,
+  reducedMotion,
+}: {
+  current: RotationItem;
+  sizer: string;
+  accent: string;
+  reducedMotion: boolean;
+}) {
+  return (
+    <span aria-live="off" style={{ display: "inline-grid", verticalAlign: "baseline" }}>
+      {/* Invisible sizer — reserves space of the longest possible phrase */}
+      <span
+        aria-hidden="true"
+        style={{ visibility: "hidden", gridRow: 1, gridColumn: 1 }}
+      >
+        {sizer}
+      </span>
+
+      {/* Visible rotating phrase */}
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={current.id}
+          initial={reducedMotion ? false : { opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={reducedMotion ? {} : { opacity: 0, y: -10 }}
+          transition={{ duration: 0.30, ease: [0.21, 0.47, 0.32, 0.98] }}
+          style={{
+            gridRow: 1, gridColumn: 1,
+            position: "relative",
+            display: "inline-block",
+            color: accent,
+          }}
+        >
+          {current.displayText}
+          {/* Gold underline */}
+          <span
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              bottom: "-0.10em",
+              left: 0, right: 0,
+              height: "0.045em",
+              borderRadius: "9999px",
+              background: accent,
+              opacity: 0.45,
+            }}
+          />
+        </motion.span>
+      </AnimatePresence>
+    </span>
   );
 }
