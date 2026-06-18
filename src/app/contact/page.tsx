@@ -120,17 +120,18 @@ export default function ContactPage() {
                 <div>
                   <h2 className="mb-8">Our location</h2>
 
-                  {/* Map placeholder */}
-                  <div className="rounded-2xl overflow-hidden mb-6 aspect-video bg-slate-100 flex items-center justify-center relative border border-slate-200">
-                    {/* TODO: Embed Google Maps or use next/image for static map */}
-                    <div className="text-center p-6" style={{ color: "var(--color-ocean-mid)" }}>
-                      <svg viewBox="0 0 48 48" fill="none" className="w-12 h-12 mx-auto mb-3 opacity-30" aria-hidden="true">
-                        <path d="M24 4C16.268 4 10 10.268 10 18c0 11 14 26 14 26s14-15 14-26c0-7.732-6.268-14-14-14z" stroke="currentColor" strokeWidth="2" />
-                        <circle cx="24" cy="18" r="4" stroke="currentColor" strokeWidth="2" />
-                      </svg>
-                      <p className="text-sm opacity-50 font-medium">Map embed</p>
-                      <p className="text-xs opacity-30 mt-1">Replace with Google Maps embed</p>
-                    </div>
+                  {/* Google Maps embed */}
+                  <div className="rounded-2xl overflow-hidden mb-6 border border-slate-200" style={{ boxShadow: "var(--shadow-warm-sm)" }}>
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3312.815603508618!2d-84.47320642424216!3d33.86864277322661!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88f27e9d2a6ced57%3A0x9b7297a8a4f8b448!2sMicrof%20LLC!5e0!3m2!1sen!2sus!4v1781756334970!5m2!1sen!2sus"
+                      width="100%"
+                      height="350"
+                      style={{ border: 0, display: "block" }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="Microf LLC office location"
+                    />
                   </div>
 
                   <div className="bg-white rounded-xl p-6 border border-slate-100" style={{ boxShadow: "var(--shadow-warm-sm)" }}>
