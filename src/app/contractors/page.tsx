@@ -176,9 +176,9 @@ export default function ContractorsPage() {
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {benefits.map((benefit, i) => (
-                <FadeIn key={i} delay={i * 0.08}>
-                  <div className="bg-white rounded-xl p-6 border border-slate-100 hover:border-[var(--color-mint)]/30 hover:shadow-[var(--shadow-warm-md)] transition-all" style={{ boxShadow: "var(--shadow-warm-sm)" }}>
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: "var(--color-mint-light)", color: "var(--color-mint)" }}>
+                <FadeIn key={i} delay={i * 0.08} className="h-full">
+                  <div className="flex flex-col h-full bg-white rounded-xl p-6 border border-slate-100 hover:border-[var(--color-mint)]/30 hover:shadow-[var(--shadow-warm-md)] transition-all" style={{ boxShadow: "var(--shadow-warm-sm)" }}>
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 flex-shrink-0" style={{ background: "var(--color-mint-light)", color: "var(--color-mint)" }}>
                       {benefit.icon}
                     </div>
                     <h3 className="font-semibold text-[var(--color-ocean)] mb-2">{benefit.title}</h3>
