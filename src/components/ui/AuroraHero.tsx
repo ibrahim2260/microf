@@ -120,10 +120,10 @@ export function AuroraHero() {
             className="text-lg leading-relaxed mb-8 max-w-xl mx-auto"
             style={{ color: "rgba(255,255,255,0.72)" }}
           >
-            When your AC dies in August or your furnace quits in January,
-            you don&apos;t have time to wait — and you shouldn&apos;t have
-            to. Microf&apos;s lease-to-own program gets you approved fast,
-            without a credit check, so your contractor can get to work.
+            When your AC dies in the summer or your furnace quits in the
+            winter, you can&apos;t afford to wait. Microf&apos;s lease-to-own
+            program gets you approved fast — no credit check, no hassle —
+            so your contractor can get to work today.
           </p>
         </FadeIn>
 
