@@ -495,16 +495,66 @@ export default function HomePage() {
 
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {[
-                  { title: "Simple Application", body: "Five minutes or less. No hard credit inquiry.", icon: "📋" },
-                  { title: "Near-Instant Decisions", body: "Most applicants hear back in real time.", icon: "⚡" },
-                  { title: "Flexible Terms", body: "18 to 48 months — pick what fits your budget.", icon: "📅" },
-                  { title: "All Credit Backgrounds", body: "Declined elsewhere? We welcome you.", icon: "✅" },
-                  { title: "Early Payoff Savings", body: "Pay ahead and unlock discounts on your total.", icon: "💰" },
-                  { title: "You Own It at the End", body: "Complete your payments and the equipment is yours.", icon: "🏡" },
+                  {
+                    title: "Simple Application",
+                    body: "Five minutes or less. No hard credit inquiry.",
+                    icon: (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
+                        <path d="M9 12h6M9 16h4M5 4h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z" /><path d="M9 8h6" />
+                      </svg>
+                    ),
+                  },
+                  {
+                    title: "Near-Instant Decisions",
+                    body: "Most applicants hear back in real time.",
+                    icon: (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                      </svg>
+                    ),
+                  },
+                  {
+                    title: "Flexible Terms",
+                    body: "18 to 48 months — pick what fits your budget.",
+                    icon: (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
+                        <rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" />
+                      </svg>
+                    ),
+                  },
+                  {
+                    title: "All Credit Backgrounds",
+                    body: "Declined elsewhere? We welcome you.",
+                    icon: (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
+                        <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                      </svg>
+                    ),
+                  },
+                  {
+                    title: "Early Payoff Savings",
+                    body: "Pay ahead and unlock discounts on your total.",
+                    icon: (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />
+                      </svg>
+                    ),
+                  },
+                  {
+                    title: "You Own It at the End",
+                    body: "Complete your payments and the equipment is yours.",
+                    icon: (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
+                        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" /><path d="M9 21V12h6v9" />
+                      </svg>
+                    ),
+                  },
                 ].map((benefit, i) => (
                   <FadeIn key={i} delay={i * 0.06} direction="up">
-                    <div className="flex gap-3 p-4 rounded-xl bg-[var(--color-base)] border border-slate-100 transition-all duration-200 hover:border-orange-200 hover:shadow-[var(--shadow-warm-md)]">
-                      <span className="text-xl mt-0.5 flex-shrink-0">{benefit.icon}</span>
+                    <div className="flex gap-3 p-4 rounded-xl bg-[var(--color-base)] border border-slate-100 transition-all duration-300 hover:border-[rgba(232,98,26,0.4)] hover:shadow-[0_0_28px_rgba(232,98,26,0.18),0_4px_12px_rgba(232,98,26,0.08)]">
+                      <div className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: "var(--color-ember-light)", color: "var(--color-ember)" }}>
+                        {benefit.icon}
+                      </div>
                       <div>
                         <h4 className="font-semibold text-[var(--color-ocean)] text-sm mb-0.5">{benefit.title}</h4>
                         <p className="text-xs text-[var(--color-ink-70)] leading-relaxed">{benefit.body}</p>
