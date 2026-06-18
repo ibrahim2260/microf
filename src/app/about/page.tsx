@@ -131,27 +131,29 @@ export default function AboutPage() {
               </FadeIn>
 
               <FadeIn delay={0.15}>
-                <div className="rounded-2xl overflow-hidden aspect-video relative shadow-[var(--shadow-warm-lg)]">
-                  <video
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="none"
-                    poster="/hero-poster.jpg"
-                    aria-label="Animation showing a home in extreme heat — the situation Microf was built to solve"
-                    className="absolute inset-0 w-full h-full object-cover"
-                  >
-                    <source src="/hero.webm" type="video/webm" />
-                    <source src="/hero.mp4" type="video/mp4" />
-                  </video>
-                  {/* Caption overlay */}
-                  <div className="absolute bottom-0 inset-x-0 px-5 py-4" style={{ background: "linear-gradient(to top, rgba(12,30,42,0.75) 0%, transparent 100%)" }}>
-                    <p className="text-white text-sm font-medium" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}>
+                <figure>
+                  <div className="rounded-2xl overflow-hidden aspect-video relative shadow-[var(--shadow-warm-lg)]">
+                    <video
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="none"
+                      poster="/hero-poster.jpg"
+                      aria-label="Animation showing a home in extreme heat — the situation Microf was built to solve"
+                      className="absolute inset-0 w-full h-full object-cover"
+                    >
+                      <source src="/hero.webm" type="video/webm" />
+                      <source src="/hero.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                  <figcaption className="mt-3 flex items-center gap-2 px-1">
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "var(--color-ember)" }} />
+                    <p className="text-sm font-medium" style={{ color: "var(--color-ink-70)" }}>
                       When critical equipment fails, Microf answers.
                     </p>
-                  </div>
-                </div>
+                  </figcaption>
+                </figure>
               </FadeIn>
             </div>
           </div>
