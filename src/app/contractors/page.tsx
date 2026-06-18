@@ -139,13 +139,19 @@ export default function ContractorsPage() {
                 { value: 43, suffix: " states", label: "Active in" },
                 { value: 48, suffix: "hr", label: "Max funding time" },
                 { value: 0, suffix: "", prefix: "$", label: "Cost to enroll" },
-                { value: 0, suffix: " credit check", label: "Required from your customers", prefix: "No hard" },
-              ].map(({ value, suffix, label, prefix }, i) => (
+                { value: 0, suffix: "", label: "Required from your customers", display: "No hard credit check" },
+              ].map(({ value, suffix, label, prefix, display } : { value: number; suffix: string; label: string; prefix?: string; display?: string }, i) => (
                 <FadeIn key={i} delay={i * 0.1} direction="up">
                   <div className="text-center">
-                    <div className="text-3xl md:text-4xl font-bold text-[var(--color-ocean)] mb-1 leading-none" style={{ fontFamily: "var(--font-display)" }}>
-                      {prefix && <span>{prefix} </span>}
-                      <AnimatedCounter end={value} suffix={suffix} />
+                    <div className={`font-bold text-[var(--color-ocean)] mb-1 leading-none ${display ? "text-xl md:text-2xl" : "text-3xl md:text-4xl"}`} style={{ fontFamily: "var(--font-display)" }}>
+                      {display ? (
+                        <span>{display}</span>
+                      ) : (
+                        <>
+                          {prefix && <span>{prefix} </span>}
+                          <AnimatedCounter end={value} suffix={suffix} />
+                        </>
+                      )}
                     </div>
                     <p className="text-sm text-[var(--color-smoke)]">{label}</p>
                   </div>
