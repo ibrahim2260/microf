@@ -57,7 +57,7 @@ export default function HomeownersPage() {
   return (
     <>
       <Nav />
-      <main className="flex-1 pt-16">
+      <main className="flex-1">
 
         {/* ── HERO — Aurora background ─────────────────────────────── */}
         <AuroraHero />
