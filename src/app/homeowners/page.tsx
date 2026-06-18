@@ -123,17 +123,72 @@ export default function HomeownersPage() {
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-4xl mx-auto">
               {[
-                { title: "Any credit background", desc: "No minimum credit score. No hard credit check. We look at more than a number.", icon: "🏦" },
-                { title: "Residential homeowners", desc: "Must be for equipment installed at your primary residence. Rental properties not eligible.", icon: "🏘️" },
-                { title: "43 states eligible", desc: "Available in most of the continental US. See excluded states below.", icon: "🗺️" },
-                { title: "Working with a Microf contractor", desc: "Equipment must be installed by a Microf-enrolled contractor. Ask your installer or find one near you.", icon: "🔧" },
-                { title: "New equipment installs", desc: "The Microf lease covers new HVAC or water heater installations — not repairs to existing equipment.", icon: "✨" },
-                { title: "Simple verification", desc: "Basic identity and address verification. No paystubs, tax returns, or bank statements required.", icon: "📄" },
+                {
+                  title: "Any credit background",
+                  desc: "No minimum credit score. No hard credit check. We look at more than a number.",
+                  icon: (
+                    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                    </svg>
+                  ),
+                },
+                {
+                  title: "Residential homeowners",
+                  desc: "Must be for equipment installed at your primary residence. Rental properties not eligible.",
+                  icon: (
+                    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" />
+                      <path d="M9 21V12h6v9" />
+                    </svg>
+                  ),
+                },
+                {
+                  title: "43 states eligible",
+                  desc: "Available in most of the continental US. See excluded states below.",
+                  icon: (
+                    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M3 12h18M12 3a14.5 14.5 0 010 18M12 3a14.5 14.5 0 000 18" />
+                    </svg>
+                  ),
+                },
+                {
+                  title: "Working with a Microf contractor",
+                  desc: "Equipment must be installed by a Microf-enrolled contractor. Ask your installer or find one near you.",
+                  icon: (
+                    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M11 4H4a1 1 0 00-1 1v14a1 1 0 001 1h14a1 1 0 001-1v-7" />
+                      <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+                    </svg>
+                  ),
+                },
+                {
+                  title: "New equipment installs",
+                  desc: "The Microf lease covers new HVAC or water heater installations — not repairs to existing equipment.",
+                  icon: (
+                    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="3" />
+                      <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
+                  ),
+                },
+                {
+                  title: "Simple verification",
+                  desc: "Basic identity and address verification. No paystubs, tax returns, or bank statements required.",
+                  icon: (
+                    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M9 12h6M9 16h4M5 4h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z" />
+                      <path d="M9 8h6" />
+                    </svg>
+                  ),
+                },
               ].map((item, i) => (
-                <FadeIn key={i} delay={i * 0.07}>
-                  <div className="bg-white rounded-xl p-5 border border-slate-100 hover:border-orange-100 transition-colors" style={{ boxShadow: "var(--shadow-warm-sm)" }}>
-                    <div className="text-2xl mb-3">{item.icon}</div>
-                    <h4 className="font-semibold text-[var(--color-ocean)] mb-1.5">{item.title}</h4>
+                <FadeIn key={i} delay={i * 0.07} className="h-full">
+                  <div className="flex flex-col h-full bg-white rounded-xl p-6 border border-slate-100 hover:border-[var(--color-ember)]/25 hover:shadow-[var(--shadow-warm-md)] transition-all duration-300" style={{ boxShadow: "var(--shadow-warm-sm)" }}>
+                    <div className="w-9 h-9 rounded-lg flex items-center justify-center mb-4 flex-shrink-0" style={{ background: "var(--color-ember-light)", color: "var(--color-ember)" }}>
+                      {item.icon}
+                    </div>
+                    <h4 className="font-semibold text-[var(--color-ocean)] mb-2">{item.title}</h4>
                     <p className="text-sm text-[var(--color-ink-70)] leading-relaxed">{item.desc}</p>
                   </div>
                 </FadeIn>
