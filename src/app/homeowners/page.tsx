@@ -292,10 +292,10 @@ export default function HomeownersPage() {
                 { href: "/homeowners/hvac", title: "HVAC System", desc: "Air conditioners, furnaces, heat pumps, mini-splits", emoji: "❄️" },
                 { href: "/homeowners/water-heaters", title: "Water Heater", desc: "Tank, tankless, gas & electric water heaters", emoji: "🌊" },
               ].map(({ href, title, desc, emoji }) => (
-                <FadeIn key={href} delay={0.1}>
+                <FadeIn key={href} delay={0.1} className="h-full">
                   <Link
                     href={href}
-                    className="group block bg-white rounded-2xl p-8 border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-ember)]/30"
+                    className="group flex flex-col h-full bg-white rounded-2xl p-8 border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-ember)]/30"
                     style={{ boxShadow: "var(--shadow-warm-sm)" }}
                   >
                     <div className="text-4xl mb-4">{emoji}</div>
