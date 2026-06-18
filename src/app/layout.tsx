@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Script from "next/script";
+import ChatWidget from "@/components/ChatWidget";
 import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -76,12 +76,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col grain">
         {children}
-        <Script
-          src="https://widgets.leadconnectorhq.com/loader.js"
-          data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
-          data-widget-id="6a2b13ef0e65563548b74c60"
-          strategy="afterInteractive"
-        />
+        <ChatWidget />
       </body>
     </html>
   );
