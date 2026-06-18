@@ -18,9 +18,10 @@ export default function Nav() {
   const pathname = usePathname();
 
   const isHome = pathname === "/";
+  const hasDarkHero = pathname === "/homeowners" || pathname === "/contractors";
 
-  // On non-home pages the nav always uses the dark (scrolled) style
-  const useDarkStyle = !isHome || scrolled;
+  // Transparent white-text nav on pages with a dark hero; solid white after scroll
+  const useDarkStyle = (!isHome && !hasDarkHero) || scrolled;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
