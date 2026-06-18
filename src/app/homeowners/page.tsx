@@ -69,7 +69,7 @@ export default function HomeownersPage() {
               <FadeIn>
                 <div>
                   <p className="text-sm font-semibold text-[var(--color-ember)] uppercase tracking-wider mb-3">We understand the moment</p>
-                  <h2 id="emergency-heading">It&apos;s 11pm. The AC just went out.</h2>
+                  <h2 id="emergency-heading">It&apos;s 6pm. The AC just went out.</h2>
                   <div className="mt-5 space-y-4 text-[var(--color-ink-70)] leading-relaxed">
                     <p>
                       You&apos;ve got kids in the house and it&apos;s 100 degrees outside. Your AC dies. You call your HVAC contractor, and they can replace the unit — but it&apos;s going to cost $4,000 to $6,000 that you don&apos;t have sitting in a checking account right now.
