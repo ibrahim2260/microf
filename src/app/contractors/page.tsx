@@ -5,6 +5,7 @@ import Footer from "@/components/layout/Footer";
 import FadeIn from "@/components/ui/FadeIn";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import PartnerForm from "./PartnerForm";
+import { ContractorPixelHero } from "@/components/ui/contractor-pixel-hero";
 
 export const metadata: Metadata = {
   title: "For Contractors — Partner With Microf | HVAC Financing",
@@ -125,65 +126,10 @@ export default function ContractorsPage() {
   return (
     <>
       <Nav />
-      <main className="flex-1 pt-16">
+      <main className="flex-1">
 
         {/* ── HERO ─────────────────────────────────────────────────── */}
-        <section
-          className="relative overflow-hidden py-20 md:py-28"
-          style={{ background: "linear-gradient(135deg, var(--color-ink) 0%, #1A2535 100%)" }}
-        >
-          <div
-            className="absolute top-0 right-0 w-[700px] h-[700px] rounded-full opacity-10 pointer-events-none"
-            style={{ background: "radial-gradient(circle, var(--color-mint) 0%, transparent 60%)", transform: "translate(20%, -30%)" }}
-          />
-          <div
-            className="absolute inset-0 opacity-[0.04] pointer-events-none"
-            style={{
-              backgroundImage: "linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)",
-              backgroundSize: "50px 50px",
-            }}
-          />
-          <div className="container-tight relative z-10">
-            <div className="max-w-2xl">
-              <FadeIn>
-                <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider" style={{ background: "rgba(22,168,124,0.15)", color: "var(--color-mint)", border: "1px solid rgba(22,168,124,0.25)" }}>
-                  For HVAC & Plumbing Contractors
-                </div>
-              </FadeIn>
-              <FadeIn delay={0.1}>
-                <h1 className="text-white mb-5">
-                  Stop losing jobs to<br />
-                  <span style={{ color: "var(--color-mint)" }}>declined financing</span>
-                </h1>
-              </FadeIn>
-              <FadeIn delay={0.2}>
-                <p className="text-lg text-white/75 leading-relaxed mb-8">
-                  Every time a homeowner gets rejected for traditional financing, you lose the job. Microf&apos;s higher approval rates mean more closed installs, faster funding, and a partnership that grows your revenue.
-                </p>
-              </FadeIn>
-              <FadeIn delay={0.3}>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <a
-                    href="#partner-form"
-                    className="inline-flex items-center justify-center gap-2 text-white font-semibold px-8 py-4 rounded-full transition-all hover:-translate-y-0.5 text-base"
-                    style={{ background: "var(--color-mint)" }}
-                  >
-                    Become a Partner — Free
-                  </a>
-                  <Link
-                    href="https://dealer.microf.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 text-white font-semibold px-8 py-4 rounded-full transition-all text-base"
-                    style={{ border: "1px solid rgba(255,255,255,0.20)" }}
-                  >
-                    Dealer Portal Login
-                  </Link>
-                </div>
-              </FadeIn>
-            </div>
-          </div>
-        </section>
+        <ContractorPixelHero />
 
         {/* ── STATS ────────────────────────────────────────────────── */}
         <section className="bg-white border-b border-slate-100 py-12" aria-label="Partnership statistics">
