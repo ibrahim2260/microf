@@ -322,8 +322,8 @@ export default function ContractorsPage() {
 
             <div className="grid md:grid-cols-3 gap-6">
               {contractorTestimonials.map((t, i) => (
-                <FadeIn key={i} delay={i * 0.1}>
-                  <div className="bg-[var(--color-base)] rounded-xl p-6 border border-slate-100 flex flex-col" style={{ boxShadow: "var(--shadow-warm-sm)" }}>
+                <FadeIn key={i} delay={i * 0.1} className="h-full">
+                  <div className="bg-[var(--color-base)] rounded-xl p-6 border border-slate-100 flex flex-col h-full" style={{ boxShadow: "var(--shadow-warm-sm)" }}>
                     <div className="flex gap-0.5 mb-4">
                       {[1,2,3,4,5].map((s) => (
                         <svg key={s} viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 text-[var(--color-ember)]" aria-hidden="true">
