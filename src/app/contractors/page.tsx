@@ -359,8 +359,8 @@ export default function ContractorsPage() {
               <FadeIn>
                 <div className="text-white">
                   <p className="text-sm font-semibold uppercase tracking-wider mb-3" style={{ color: "var(--color-mint)" }}>Get started today</p>
-                  <h2 className="text-white mb-5" id="form-heading">Become a Microf partner</h2>
-                  <p className="text-white/90 leading-relaxed mb-8">
+                  <h2 className="mb-5" id="form-heading" style={{ color: "#ffffff" }}>Become a Microf partner</h2>
+                  <p className="leading-relaxed mb-8" style={{ color: "rgba(255,255,255,0.90)" }}>
                     Fill out the form and a Microf representative will reach out within 1 business day to complete your enrollment. There&apos;s no cost, no obligation, and no long-term contract required.
                   </p>
                   <div className="space-y-4">
