@@ -15,22 +15,41 @@ const values = [
   {
     title: "Dignity First",
     desc: "Every homeowner deserves to be treated with respect, regardless of their financial history. We built a process that feels nothing like a judgment.",
-    icon: "🤝",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402C1 3.731 3.68 2 6.5 2c1.98 0 4.04 1.14 5.5 2.87C13.46 3.14 15.52 2 17.5 2 20.32 2 23 3.73 23 7.191c0 4.105-5.37 8.863-11 14.402z" />
+      </svg>
+    ),
   },
   {
     title: "Speed When It Matters",
     desc: "When your HVAC fails in extreme weather, minutes matter. Our near-instant approval process was engineered for moments of real urgency.",
-    icon: "⚡",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+      </svg>
+    ),
   },
   {
     title: "Transparency Always",
     desc: "Lease-to-own costs more than cash. We say so clearly, upfront, every time — because informed customers make better decisions.",
-    icon: "📖",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 16v-4M12 8h.01" />
+      </svg>
+    ),
   },
   {
     title: "True Partnership",
     desc: "Contractors who partner with Microf aren't just using a tool — they're growing with a company that has a genuine stake in their success.",
-    icon: "🤜",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+      </svg>
+    ),
   },
 ];
 
@@ -150,9 +169,17 @@ export default function AboutPage() {
 
             <div className="grid sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
               {values.map((value, i) => (
-                <FadeIn key={i} delay={i * 0.1}>
-                  <div className="bg-white rounded-xl p-6 border border-slate-100 h-full" style={{ boxShadow: "var(--shadow-warm-sm)" }}>
-                    <div className="text-3xl mb-4">{value.icon}</div>
+                <FadeIn key={i} delay={i * 0.1} className="h-full">
+                  <div
+                    className="flex flex-col h-full bg-white rounded-xl p-6 border border-slate-100 hover:border-[rgba(232,98,26,0.4)] hover:shadow-[0_0_28px_rgba(232,98,26,0.22),0_4px_16px_rgba(232,98,26,0.10)] transition-all duration-300"
+                    style={{ boxShadow: "var(--shadow-warm-sm)" }}
+                  >
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center mb-4 flex-shrink-0"
+                      style={{ background: "var(--color-ember-light)", color: "var(--color-ember)" }}
+                    >
+                      {value.icon}
+                    </div>
                     <h3 className="font-semibold mb-2" style={{ color: "var(--color-ocean)" }}>{value.title}</h3>
                     <p className="text-sm text-[var(--color-ink-70)] leading-relaxed">{value.desc}</p>
                   </div>
