@@ -109,7 +109,7 @@ export default function Nav() {
                 Contractor Login
               </Link>
               <Link
-                href="https://dealer.microf.com/payment"
+                href="https://www2.invoicecloud.com/portal/(S(wcmspbjk50cjqde0hyhoigxx))/2/Site.aspx?G=b10c55d7-88b2-484c-bfc4-f48f61972472"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm font-medium transition-all duration-200 px-3 py-2"
@@ -203,7 +203,7 @@ export default function Nav() {
                   Contractor Login
                 </Link>
                 <Link
-                  href="https://dealer.microf.com/payment"
+                  href="https://www2.invoicecloud.com/portal/(S(wcmspbjk50cjqde0hyhoigxx))/2/Site.aspx?G=b10c55d7-88b2-484c-bfc4-f48f61972472"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block px-4 py-3 rounded-xl text-base text-[var(--color-ink-70)] hover:bg-slate-50 transition-colors"
