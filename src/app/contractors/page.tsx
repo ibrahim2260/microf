@@ -360,7 +360,7 @@ export default function ContractorsPage() {
                 <div className="text-white">
                   <p className="text-sm font-semibold uppercase tracking-wider mb-3" style={{ color: "var(--color-mint)" }}>Get started today</p>
                   <h2 className="text-white mb-5" id="form-heading">Become a Microf partner</h2>
-                  <p className="text-white/70 leading-relaxed mb-8">
+                  <p className="text-white/90 leading-relaxed mb-8">
                     Fill out the form and a Microf representative will reach out within 1 business day to complete your enrollment. There&apos;s no cost, no obligation, and no long-term contract required.
                   </p>
                   <div className="space-y-4">
@@ -372,16 +372,16 @@ export default function ContractorsPage() {
                     ].map(({ icon, text }) => (
                       <div key={text} className="flex items-center gap-3">
                         <span className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style={{ background: "var(--color-mint)" }}>{icon}</span>
-                        <span className="text-sm text-white/70">{text}</span>
+                        <span className="text-sm text-white/90">{text}</span>
                       </div>
                     ))}
                   </div>
-                  <div className="mt-8 p-5 rounded-xl" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.10)" }}>
+                  <div className="mt-8 p-5 rounded-xl" style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)" }}>
                     <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: "var(--color-mint)" }}>Contractor Support</p>
                     <a href="tel:8554988200" className="text-xl font-bold text-white hover:text-[var(--color-mint)] transition-colors">
                       855-498-8200
                     </a>
-                    <p className="text-xs text-white/40 mt-1">Mon–Fri 8AM–8PM · Sat 9AM–2PM EST</p>
+                    <p className="text-xs text-white/65 mt-1">Mon–Fri 8AM–8PM · Sat 9AM–2PM EST</p>
                   </div>
                 </div>
               </FadeIn>
