@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
@@ -205,21 +206,56 @@ export default function AboutPage() {
             </FadeIn>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              {[1, 2, 3].map((n) => (
-                <FadeIn key={n} delay={n * 0.08}>
-                  <div className="bg-[var(--color-base)] rounded-xl p-8 border border-slate-100 text-center h-full flex flex-col items-center" style={{ boxShadow: "var(--shadow-warm-sm)" }}>
-                    <div className="w-20 h-20 rounded-full mb-5 flex items-center justify-center" style={{ background: "var(--color-ocean-light)" }}>
-                      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" style={{ color: "var(--color-ocean-mid)", opacity: 0.4 }} aria-hidden="true">
-                        <circle cx="24" cy="18" r="8" stroke="currentColor" strokeWidth="2" />
-                        <path d="M8 42c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      </svg>
-                    </div>
-                    <div className="h-4 bg-slate-100 rounded-full w-32 mb-2.5" />
-                    <div className="h-3 bg-slate-100 rounded-full w-24 mb-4" />
-                    <p className="text-xs text-[var(--color-smoke)] mt-auto">Bio coming soon</p>
+
+              {/* Jeremy Sykes */}
+              <FadeIn delay={0.08} className="h-full">
+                <div className="bg-[var(--color-base)] rounded-xl overflow-hidden border border-slate-100 text-center h-full flex flex-col" style={{ boxShadow: "var(--shadow-warm-sm)" }}>
+                  <div className="relative w-full aspect-square overflow-hidden">
+                    <Image
+                      src="/jeremy-sykes.png"
+                      alt="Jeremy Sykes, Marketing Manager at Microf"
+                      fill
+                      className="object-cover object-top"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
                   </div>
-                </FadeIn>
-              ))}
+                  <div className="px-6 py-5">
+                    <h3 className="font-semibold text-base" style={{ color: "var(--color-ocean)" }}>Jeremy Sykes</h3>
+                    <p className="text-sm mt-1" style={{ color: "var(--color-smoke)" }}>Marketing Manager</p>
+                  </div>
+                </div>
+              </FadeIn>
+
+              {/* Placeholder 2 */}
+              <FadeIn delay={0.16} className="h-full">
+                <div className="bg-[var(--color-base)] rounded-xl p-8 border border-slate-100 text-center h-full flex flex-col items-center" style={{ boxShadow: "var(--shadow-warm-sm)" }}>
+                  <div className="w-20 h-20 rounded-full mb-5 flex items-center justify-center" style={{ background: "var(--color-ocean-light)" }}>
+                    <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" style={{ color: "var(--color-ocean-mid)", opacity: 0.4 }} aria-hidden="true">
+                      <circle cx="24" cy="18" r="8" stroke="currentColor" strokeWidth="2" />
+                      <path d="M8 42c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </div>
+                  <div className="h-4 bg-slate-100 rounded-full w-32 mb-2.5" />
+                  <div className="h-3 bg-slate-100 rounded-full w-24 mb-4" />
+                  <p className="text-xs text-[var(--color-smoke)] mt-auto">Bio coming soon</p>
+                </div>
+              </FadeIn>
+
+              {/* Placeholder 3 */}
+              <FadeIn delay={0.24} className="h-full">
+                <div className="bg-[var(--color-base)] rounded-xl p-8 border border-slate-100 text-center h-full flex flex-col items-center" style={{ boxShadow: "var(--shadow-warm-sm)" }}>
+                  <div className="w-20 h-20 rounded-full mb-5 flex items-center justify-center" style={{ background: "var(--color-ocean-light)" }}>
+                    <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" style={{ color: "var(--color-ocean-mid)", opacity: 0.4 }} aria-hidden="true">
+                      <circle cx="24" cy="18" r="8" stroke="currentColor" strokeWidth="2" />
+                      <path d="M8 42c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </div>
+                  <div className="h-4 bg-slate-100 rounded-full w-32 mb-2.5" />
+                  <div className="h-3 bg-slate-100 rounded-full w-24 mb-4" />
+                  <p className="text-xs text-[var(--color-smoke)] mt-auto">Bio coming soon</p>
+                </div>
+              </FadeIn>
+
             </div>
           </div>
         </section>
