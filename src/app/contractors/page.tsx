@@ -204,7 +204,7 @@ export default function ContractorsPage() {
               {enrollmentSteps.map((item, i) => (
                 <FadeIn key={i} delay={i * 0.1} direction="up">
                   <div className="text-center">
-                    <div className="text-5xl font-bold mb-4 leading-none" style={{ fontFamily: "var(--font-display)", color: "var(--color-mist)" }}>
+                    <div className="text-5xl font-bold mb-4 leading-none" style={{ fontFamily: "var(--font-display)", color: "var(--color-smoke)" }}>
                       {item.step}
                     </div>
                     <h3 className="font-semibold text-[var(--color-ocean)] mb-2 text-base">{item.title}</h3>
