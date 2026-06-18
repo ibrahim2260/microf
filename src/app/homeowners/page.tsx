@@ -184,7 +184,7 @@ export default function HomeownersPage() {
                 },
               ].map((item, i) => (
                 <FadeIn key={i} delay={i * 0.07} className="h-full">
-                  <div className="flex flex-col h-full bg-white rounded-xl p-6 border border-slate-100 hover:border-[var(--color-ember)]/25 hover:shadow-[var(--shadow-warm-md)] transition-all duration-300" style={{ boxShadow: "var(--shadow-warm-sm)" }}>
+                  <div className="flex flex-col h-full bg-white rounded-xl p-6 border border-slate-100 hover:border-[rgba(232,98,26,0.4)] hover:shadow-[0_0_28px_rgba(232,98,26,0.22),0_4px_16px_rgba(232,98,26,0.10)] transition-all duration-300" style={{ boxShadow: "var(--shadow-warm-sm)" }}>
                     <div className="w-9 h-9 rounded-lg flex items-center justify-center mb-4 flex-shrink-0" style={{ background: "var(--color-ember-light)", color: "var(--color-ember)" }}>
                       {item.icon}
                     </div>
